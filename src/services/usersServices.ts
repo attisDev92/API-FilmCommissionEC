@@ -19,10 +19,10 @@ export const createNewUser = async ({
   password,
   role,
 }: Omit<IUser, 'id'>): Promise<IUser> => {
-  const nameAlreadyExist: IUser | null = await User.findOne({
+  const nameAlreadyExist = await User.findOne({
     name,
   })
-  const mailAlreadyExist: IUser | null = await User.findOne({
+  const mailAlreadyExist = await User.findOne({
     email,
   })
 

@@ -23,14 +23,12 @@ describe('User API', (): void => {
       .send(newUser)
       .expect(201)
 
-    expect((response.body.data as Pick<IUser, 'email'>).email).toBe(
-      newUser.email,
-    )
-    expect((response.body.data as Pick<IUser, 'name'>).name).toBe(newUser.name)
+    expect(response.body.data.email).toBe(newUser.email)
+    expect(response.body.data.name).toBe(newUser.name)
 
-    const user: IUser | null = await User.findOne({ email: newUser.email })
-    expect(user as IUser).not.toBeNull()
-    expect((user as IUser).name).toBe(newUser.name)
+    const user = await User.findOne({ email: newUser.email })
+    expect(user).not.toBeNull()
+    expect(user?.name).toBe(newUser.name)
   })
 
   it('create user already exist', async (): Promise<void> => {

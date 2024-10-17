@@ -14,7 +14,7 @@ export const initialUsers: Omit<IUser, 'id'>[] = [
 
 export const newUser: Omit<IUser, 'id'> = {
   name: 'Test User',
-  email: 'attis.alejandro@gmail.com',
+  email: 'test@gmail.com',
   password: 'passwordTest',
   role: UserRoleType.CREATOR,
 }

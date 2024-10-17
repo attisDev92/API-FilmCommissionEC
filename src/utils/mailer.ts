@@ -9,12 +9,15 @@ export interface EmailOptions {
 }
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com',
-  port: 587,
-  secure: false,
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: config.MAIL,
     pass: config.MAIL_PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
   },
 })
 
