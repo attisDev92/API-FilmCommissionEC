@@ -1,24 +1,34 @@
 import { Request } from 'express'
 import { JwtPayload } from 'jsonwebtoken'
 
-export type userRoleType = 'admin' | 'creator' | 'viewer'
-
-export interface IErrorMessage {
-  error: string
-  status?: number
+export enum UserRoleType {
+  ADMIN = 'admin',
+  CREATOR = 'creator',
+  VIEWER = 'viewer',
 }
 
 export interface IUser {
   name: string
   email: string
   password: string
-  role?: userRoleType
+  role?: UserRoleType
   id: string
+  validation?: Boolean
 }
 
 export interface IUserForToken {
   name: string
   id: string
+}
+
+export interface IUserForValidateEmail {
+  name: string
+  email: string
+}
+
+export interface IUserLoginPayload {
+  name: string
+  userToken: string
 }
 
 export interface AuthenticatedRequest extends Request {

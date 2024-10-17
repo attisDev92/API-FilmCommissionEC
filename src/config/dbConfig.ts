@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import config from './envConfig'
 
-const connctDataBase = async (): Promise<void> => {
+const connectDataBase = async (): Promise<void> => {
   try {
     if (!config.MONGO_URI) {
       throw new Error('Mongo URI is not defined')
@@ -14,4 +14,4 @@ const connctDataBase = async (): Promise<void> => {
   }
 }
 
-export default connctDataBase
+export default connectDataBase

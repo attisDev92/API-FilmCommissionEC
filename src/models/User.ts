@@ -26,6 +26,10 @@ const userSchema = new Schema<IUser>({
     enum: ['admin', 'creator', 'viewer'],
     default: 'viewer',
   },
+  validation: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 userSchema.set('toJSON', {
