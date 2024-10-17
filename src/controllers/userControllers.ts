@@ -1,5 +1,5 @@
 import { Response, Request } from 'express'
-import { AuthenticatedRequest, IUser } from '../types'
+import { AuthenticatedRequest, IUser, IUserLoginPayload } from '../types'
 import {
   createNewUser,
   loginUser,
@@ -34,7 +34,7 @@ const createUser = async (
     if (error instanceof mongoose.Error && error.name === 'ValidationError') {
       return httpResponse.BAD_REQUEST(res, ErrorsMessage.INVALID_DATA)
     }
-    return httpResponse.ERROR(res)
+    return httpResponse.ERROR(res, error.message)
   }
 }
 
@@ -52,10 +52,10 @@ const getUserFromEmailToken = async (
       (error instanceof CustomError &&
         error.message === 'El recurso al que intenta acceder no existe')
     ) {
-      return httpResponse.NOT_FOUND(res, ErrorsMessage.NOT_EXIST)
+      return httpResponse.BAD_REQUEST(res, ErrorsMessage.NOT_EXIST)
     }
 
-    return httpResponse.ERROR(res)
+    return httpResponse.ERROR(res, error.message)
   }
 }
 
@@ -65,24 +65,24 @@ const changevalidationUser = async (
 ): Promise<void | Response> => {
   const name = req.body
   try {
-    await validateUser(name)
-    httpResponse.ACCEPTED(res)
+    const user = await validateUser(name)
+    httpResponse.ACCEPTED(res, user)
   } catch (error: any) {
     if (
       error instanceof CustomError &&
       error.message === 'El recurso al que intenta acceder no existe'
     ) {
-      return httpResponse.NOT_FOUND(res, ErrorsMessage.NOT_EXIST)
+      return httpResponse.BAD_REQUEST(res, ErrorsMessage.NOT_EXIST)
     }
 
-    return httpResponse.ERROR(res)
+    return httpResponse.ERROR(res, error.message)
   }
 }
 
 const login = async (req: Request, res: Response): Promise<void | Response> => {
   const { email, password } = req.body as Pick<IUser, 'email' | 'password'>
   try {
-    const userToken = await loginUser({
+    const userToken: IUserLoginPayload = await loginUser({
       email,
       password,
     })
@@ -91,11 +91,11 @@ const login = async (req: Request, res: Response): Promise<void | Response> => {
   } catch (error: any) {
     if (
       error instanceof CustomError &&
-      error.message === 'Usuario o contraseña equivocados'
+      error.message === 'Usuario y/o contraseña invalidos'
     ) {
       return httpResponse.BAD_REQUEST(res, ErrorsMessage.INVALID_CREDENTIALS)
     }
-    return httpResponse.ERROR(res)
+    return httpResponse.ERROR(res, error.message)
   }
 }
 
@@ -115,7 +115,7 @@ const getUsers = async (
     const users = await getAllUsers()
     return httpResponse.OK(res, users)
   } catch (error: any) {
-    return httpResponse.ERROR(res)
+    return httpResponse.ERROR(res, error.message)
   }
 }
 

@@ -51,13 +51,13 @@ export const createEmailValidationToken = async (
   return emailToken
 }
 
-// export const fetchInitialUsers = async (): Promise<IUser[]> => {
-//   let response: IUser[] = []
+export const fetchInitialUsers = async (): Promise<IUser[]> => {
+  let response: IUser[] = []
 
-//   for (let user of initialUsers) {
-//     const newUser: IUser = await createInitialUser(user)
-//     response.push(newUser)
-//   }
+  for (let user of initialUsers) {
+    const newUser: IUser = await createInitialUser(user)
+    response.push(newUser)
+  }
 
-//   return response
-// }
+  return response
+}

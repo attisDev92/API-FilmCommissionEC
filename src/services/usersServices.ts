@@ -82,8 +82,8 @@ export const validateEmailUser = async (params: any): Promise<IUser> => {
   return user
 }
 
-export const validateUser = async (username: Pick<IUser, 'name'>) => {
-  const user = await User.findOne({ name: username })
+export const validateUser = async (name: Pick<IUser, 'name'>) => {
+  const user = await User.findOne(name)
 
   if (!user)
     throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
@@ -118,7 +118,9 @@ export const loginUser = async ({
     throw new Error('SECRET no se encuentra definido')
   }
 
-  const userToken: string = jwt.sign(userForToken, config.SECRET_USER)
+  const userToken: string = jwt.sign(userForToken, config.SECRET_USER, {
+    expiresIn: 24 * 60 * 60,
+  })
   return { userToken, name: user.name }
 }
 
