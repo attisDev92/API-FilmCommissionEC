@@ -36,3 +36,14 @@ export interface IUserLoginPayload {
 export interface AuthenticatedRequest extends Request {
   userToken?: string | JwtPayload
 }
+
+export interface DecodedToken {
+  name?: string
+  id?: string
+  iat: string
+  exp: string
+}
+
+export interface RequestDecodedToken extends Request {
+  userToken?: DecodedToken
+}

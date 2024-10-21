@@ -14,6 +14,12 @@ export const initialUsers: Omit<IUser, 'id'>[] = [
     email: 'user1@usermail.com',
     password: 'passworduser1',
   },
+  {
+    name: 'User2',
+    email: 'user2@usermail.com',
+    password: 'passworduser2',
+    role: UserRoleType.ADMIN,
+  },
 ]
 
 export const newUser: Omit<IUser, 'id'> = {

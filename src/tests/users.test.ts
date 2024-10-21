@@ -190,8 +190,8 @@ describe('User API', (): void => {
     const users: IUser[] = await fetchInitialUsers()
 
     const tokenUser: IUserLoginPayload = await loginUser({
-      email: initialUsers[0].email,
-      password: initialUsers[0].password,
+      email: initialUsers[1].email,
+      password: initialUsers[1].password,
     })
 
     const response = await request(app)
@@ -202,5 +202,26 @@ describe('User API', (): void => {
 
     expect(response.body.success).toBe(true)
     expect(response.body.data).toHaveLength(users.length)
+  })
+
+  it('Get all users with invalid role user', async (): Promise<void> => {
+    await fetchInitialUsers()
+
+    const tokenUser: IUserLoginPayload = await loginUser({
+      email: initialUsers[0].email,
+      password: initialUsers[0].password,
+    })
+
+    const response = await request(app)
+      .get('/api/users/')
+      .set('Authorization', `Bearer ${tokenUser.userToken}`)
+      .send()
+      .expect(403)
+
+    expect(response.body).toEqual({
+      status: 403,
+      statusMsg: expect.stringContaining('Forbidden'),
+      error: expect.stringContaining('Usuario y/o contraseña invalidos'),
+    })
   })
 })
