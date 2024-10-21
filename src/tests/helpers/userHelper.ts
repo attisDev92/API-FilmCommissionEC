@@ -1,4 +1,8 @@
-import { IUser, IUserForValidateEmail, UserRoleType } from '../../types'
+import {
+  IUser,
+  IUserForValidateEmail,
+  UserRoleType,
+} from '../../types/userTypes'
 import User from '../../models/User'
 import config from '../../config/envConfig'
 import bcrypt from 'bcrypt'

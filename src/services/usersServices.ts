@@ -6,7 +6,7 @@ import {
   IUserForValidateEmail,
   IUserLoginPayload,
   UserRoleType,
-} from '../types'
+} from '../types/userTypes'
 import config from '../config/envConfig'
 import User from '../models/User'
 import { CustomError, ErrorsMessage } from '../shared/CustomError'

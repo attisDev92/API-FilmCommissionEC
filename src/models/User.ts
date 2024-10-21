@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
-import { IUser } from '../types'
+import { IUser } from '../types/userTypes'
 
 const userSchema = new Schema<IUser>({
   name: {
@@ -29,6 +29,10 @@ const userSchema = new Schema<IUser>({
   validation: {
     type: Boolean,
     default: false,
+  },
+  profile: {
+    type: Schema.ObjectId,
+    ref: 'UserProfile',
   },
 })
 

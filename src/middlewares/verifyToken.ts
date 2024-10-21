@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { NextFunction, Response } from 'express'
 import config from '../config/envConfig'
-import { AuthenticatedRequest } from '../types'
+import { AuthenticatedRequest } from '../types/userTypes'
 import { ErrorsMessage } from '../shared/CustomError'
 import { HttpResponse } from '../shared/HttpResponse'
 

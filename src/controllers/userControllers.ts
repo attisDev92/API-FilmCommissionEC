@@ -1,5 +1,9 @@
 import { Response, Request } from 'express'
-import { AuthenticatedRequest, IUser, IUserLoginPayload } from '../types'
+import {
+  AuthenticatedRequest,
+  IUser,
+  IUserLoginPayload,
+} from '../types/userTypes'
 import {
   createNewUser,
   loginUser,

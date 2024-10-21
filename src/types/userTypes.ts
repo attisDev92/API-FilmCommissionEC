@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import { JwtPayload } from 'jsonwebtoken'
+import { ObjectId } from 'mongoose'
 
 export enum UserRoleType {
   ADMIN = 'admin',
@@ -12,8 +13,9 @@ export interface IUser {
   email: string
   password: string
   role?: UserRoleType
-  id: string
+  id: ObjectId
   validation?: Boolean
+  profile?: string
 }
 
 export interface IUserForToken {

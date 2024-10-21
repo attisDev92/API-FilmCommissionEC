@@ -8,7 +8,7 @@ import {
   createEmailValidationToken,
   fetchInitialUsers,
 } from './helpers/userHelper'
-import { IUser, IUserLoginPayload } from '../types'
+import { IUser, IUserLoginPayload } from '../types/userTypes'
 import { loginUser } from '../services/usersServices'
 import { initialUsers } from './helpers/userHelper'
 
