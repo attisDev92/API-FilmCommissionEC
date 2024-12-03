@@ -8,7 +8,7 @@ import {
   createEmailValidationToken,
   fetchInitialUsers,
 } from './helpers/userHelper'
-import { IUser, IUserLoginPayload } from '../types/userTypes'
+import { UserType, UserLoginPayload } from '../types/userTypes'
 import { loginUser } from '../services/usersServices'
 import { initialUsers } from './helpers/userHelper'
 
@@ -24,11 +24,11 @@ describe('User API', (): void => {
       .expect(201)
 
     expect(response.body.data.email).toBe(newUser.email)
-    expect(response.body.data.name).toBe(newUser.name)
+    expect(response.body.data.username).toBe(newUser.username)
 
     const user = await User.findOne({ email: newUser.email })
     expect(user).not.toBeNull()
-    expect(user?.name).toBe(newUser.name)
+    expect(user?.username).toBe(newUser.username)
   })
 
   it('create user already exist', async (): Promise<void> => {
@@ -36,7 +36,7 @@ describe('User API', (): void => {
 
     const response = await request(app)
       .post('/api/users')
-      .send({ name: user.name, email: user.email })
+      .send({ username: user.username, email: user.email })
       .expect(400)
 
     expect(response.body).toEqual({
@@ -95,11 +95,11 @@ describe('User API', (): void => {
 
     const response = await request(app)
       .post('/api/users/auth')
-      .send({ name: user.name })
+      .send({ username: user.username })
       .expect(202)
 
     expect(response.body.success).toBe(true)
-    expect(response.body.data.name).toBe(user.name)
+    expect(response.body.data.username).toBe(user.username)
   })
 
   it('change validation status with invalid data', async (): Promise<void> => {
@@ -107,7 +107,7 @@ describe('User API', (): void => {
 
     const response = await request(app)
       .post('/api/users/auth')
-      .send({ name: 'invalid name' })
+      .send({ username: 'invalid username' })
       .expect(400)
 
     expect(response.body).toEqual({
@@ -120,7 +120,7 @@ describe('User API', (): void => {
   })
 
   it('Login user', async (): Promise<void> => {
-    const initalUser: IUser = await createInitialUser(newUser)
+    const initalUser: UserType = await createInitialUser(newUser)
 
     const response = await request(app)
       .post('/api/users/login')
@@ -128,7 +128,7 @@ describe('User API', (): void => {
       .expect(202)
 
     expect(response.body.success).toBe(true)
-    expect(response.body.data.name).toBe(initalUser.name)
+    expect(response.body.data.username).toBe(initalUser.username)
     expect(response.body.data.token).not.toBeNull()
   })
 
@@ -142,9 +142,9 @@ describe('User API', (): void => {
   })
 
   it('validate token', async (): Promise<void> => {
-    const user: IUser = await createInitialUser(newUser)
-    const tokenUser: IUserLoginPayload = await loginUser({
-      email: newUser.email,
+    const user: UserType = await createInitialUser(newUser)
+    const tokenUser: UserLoginPayload = await loginUser({
+      username: newUser.username,
       password: newUser.password,
     })
 
@@ -154,12 +154,12 @@ describe('User API', (): void => {
       .send()
       .expect(202)
 
-    expect(user.name).toBe(tokenUser.name)
-    expect(response.body.data.name).toBe(user.name)
+    expect(user.username).toBe(tokenUser.username)
+    expect(response.body.data.username).toBe(user.username)
   })
 
   it('valid token without token', async (): Promise<void> => {
-    const user: IUser = await createInitialUser(newUser)
+    const user: UserType = await createInitialUser(newUser)
 
     const response = await request(app)
       .get('/api/users/login')
@@ -168,11 +168,11 @@ describe('User API', (): void => {
 
     expect(response.body.status).toBe(403)
     expect(response.body.error).toEqual('Token invalido, sin autorización')
-    expect(response.body).not.toContain(user.name)
+    expect(response.body).not.toContain(user.username)
   })
 
   it('valid token with invalid token', async (): Promise<void> => {
-    const user: IUser = await createInitialUser(newUser)
+    const user: UserType = await createInitialUser(newUser)
     const invalidToken = 'enjkkdsjkjjfsldfjskjdfjklsjdflkjsdf'
 
     const response = await request(app)
@@ -183,14 +183,14 @@ describe('User API', (): void => {
 
     expect(response.body.status).toBe(403)
     expect(response.body.error).toEqual('Token invalido, sin autorización')
-    expect(response.body).not.toContain(user.name)
+    expect(response.body).not.toContain(user.username)
   })
 
   it('Get all users', async (): Promise<void> => {
-    const users: IUser[] = await fetchInitialUsers()
+    const users: UserType[] = await fetchInitialUsers()
 
-    const tokenUser: IUserLoginPayload = await loginUser({
-      email: initialUsers[1].email,
+    const tokenUser: UserLoginPayload = await loginUser({
+      username: initialUsers[1].username,
       password: initialUsers[1].password,
     })
 
@@ -207,8 +207,8 @@ describe('User API', (): void => {
   it('Get all users with invalid role user', async (): Promise<void> => {
     await fetchInitialUsers()
 
-    const tokenUser: IUserLoginPayload = await loginUser({
-      email: initialUsers[0].email,
+    const tokenUser: UserLoginPayload = await loginUser({
+      username: initialUsers[0].username,
       password: initialUsers[0].password,
     })
 

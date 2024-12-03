@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
-import { IUser } from '../types/userTypes'
+import { UserType } from '../types/userTypes'
 
-const userSchema = new Schema<IUser>({
-  name: {
+const userSchema = new Schema<UserType>({
+  username: {
     type: String,
     required: true,
     minlength: 5,
@@ -46,6 +46,6 @@ userSchema.set('toJSON', {
 
 userSchema.plugin(mongooseUniqueValidator)
 
-const User = model<IUser>('User', userSchema)
+const User = model<UserType>('User', userSchema)
 
 export default User

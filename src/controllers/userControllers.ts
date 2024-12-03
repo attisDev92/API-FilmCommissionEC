@@ -1,8 +1,8 @@
 import { Response, Request } from 'express'
 import {
   AuthenticatedRequest,
-  IUser,
-  IUserLoginPayload,
+  UserType,
+  UserLoginPayload,
 } from '../types/userTypes'
 import {
   createNewUser,
@@ -47,6 +47,7 @@ const getUserFromEmailToken = async (
   res: Response,
 ): Promise<void | Response> => {
   const { params } = req
+
   try {
     await validateEmailUser(params.code)
     httpResponse.ACCEPTED(res)
@@ -67,9 +68,10 @@ const changevalidationUser = async (
   req: Request,
   res: Response,
 ): Promise<void | Response> => {
-  const name = req.body
+  const { token } = req.body
+
   try {
-    const user = await validateUser(name)
+    const user = await validateUser(token)
     httpResponse.ACCEPTED(res, user)
   } catch (error: any) {
     if (
@@ -84,11 +86,14 @@ const changevalidationUser = async (
 }
 
 const login = async (req: Request, res: Response): Promise<void | Response> => {
-  const { email, password } = req.body as Pick<IUser, 'email' | 'password'>
+  const { username, password } = req.body as Pick<
+    UserType,
+    'password' | 'username'
+  >
   try {
-    const userToken: IUserLoginPayload = await loginUser({
-      email,
+    const userToken: UserLoginPayload = await loginUser({
       password,
+      username,
     })
 
     return httpResponse.ACCEPTED(res, userToken)

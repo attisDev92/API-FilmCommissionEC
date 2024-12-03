@@ -16,8 +16,8 @@ if (!MONGO_URI) {
 
 const FrontURL =
   process.env.NODE_ENV === 'production'
-    ? process.env.API_PRODUCTION
-    : process.env.API_DEV
+    ? process.env.FRONT_PRODUCTION
+    : process.env.FRONT_DEV
 
 const SECRET_USER = process.env.SECRETE_USER_WORD
 const SALT: number = 10

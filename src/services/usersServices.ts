@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import {
-  IUser,
-  IUserForToken,
-  IUserForValidateEmail,
-  IUserLoginPayload,
+  UserType,
+  UserForToken,
+  UserForValidateEmail,
+  UserLoginPayload,
   UserRoleType,
 } from '../types/userTypes'
 import config from '../config/envConfig'
@@ -14,13 +14,12 @@ import { HttpStatus } from '../shared/HttpResponse'
 import { EmailOptions, sendEmail } from '../utils/mailer'
 
 export const createNewUser = async ({
-  name,
+  username,
   email,
   password,
-  role,
-}: Omit<IUser, 'id'>): Promise<IUser> => {
+}: Omit<UserType, 'id' | 'role'>): Promise<UserType> => {
   const nameAlreadyExist = await User.findOne({
-    name,
+    username,
   })
   const mailAlreadyExist = await User.findOne({
     email,
@@ -32,19 +31,19 @@ export const createNewUser = async ({
   const passwordHash: string = await bcrypt.hash(password, config.SALT)
 
   const user = new User({
-    name,
+    username,
     password: passwordHash,
     email,
-    role: role ? role : UserRoleType.VIEWER,
+    role: UserRoleType.CREATOR,
   })
 
   await user.save()
   return user
 }
 
-export const sendValidationUserCode = async (user: IUser): Promise<void> => {
-  const userForValidateEmail: IUserForValidateEmail = {
-    name: user.name,
+export const sendValidationUserCode = async (user: UserType): Promise<void> => {
+  const userForValidateEmail: UserForValidateEmail = {
+    username: user.username,
     email: user.email,
   }
 
@@ -52,14 +51,14 @@ export const sendValidationUserCode = async (user: IUser): Promise<void> => {
     throw new Error('SECRET no se encuentra definido')
   }
   const emailToken: string = jwt.sign(userForValidateEmail, config.SECRET_MAIL)
-  const linkWithTokenForEmail: string = `${config.FrontURL}/users/emailAuth/${emailToken}`
+  const linkWithTokenForEmail: string = `${config.FrontURL}/system/auth/${emailToken}`
 
   const emailOptions: EmailOptions = {
     to: user.email,
-    subject: 'Verificación de correo electrónico',
-    text: `Tu código de verificación es ${linkWithTokenForEmail}`,
+    subject: 'Verificación de correo electrónico Ecuador Filmcommission',
+    text: `Verifica tu correo electrónico`,
     html: `
-      <p>Hola ${user.name},</p>
+      <p>Hola ${user.username},</p>
       </br>
       <p>Para continuar con el registro como usuario del catálogo de locaciones de Ecuador Film Commission</p>
       <p>debes verificar tu mail ingresando al siguiente link: <strong><a href="${linkWithTokenForEmail}" target="_blank"> VERIFICAR EMAIL </a></strong></p>
@@ -70,7 +69,7 @@ export const sendValidationUserCode = async (user: IUser): Promise<void> => {
   await sendEmail(emailOptions)
 }
 
-export const validateEmailUser = async (params: any): Promise<IUser> => {
+export const validateEmailUser = async (params: any): Promise<UserType> => {
   if (!config.SECRET_MAIL) throw new Error('SECRET de JWT no está definido')
 
   const decodedEmail = jwt.verify(params, config.SECRET_MAIL) as JwtPayload
@@ -82,21 +81,24 @@ export const validateEmailUser = async (params: any): Promise<IUser> => {
   return user
 }
 
-export const validateUser = async (name: Pick<IUser, 'name'>) => {
-  const user = await User.findOne(name)
+export const validateUser = async (userToken: string) => {
+  if (!config.SECRET_MAIL) throw new Error('SECRET de JWT no está definido')
+
+  const decodeToken = jwt.verify(userToken, config.SECRET_MAIL) as JwtPayload
+  const user = await User.findOne({ email: decodeToken.email })
 
   if (!user)
     throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
-
   user.validation = true
+
   return user.save()
 }
 
 export const loginUser = async ({
-  email,
+  username,
   password,
-}: Pick<IUser, 'email' | 'password'>): Promise<IUserLoginPayload> => {
-  const user = await User.findOne({ email })
+}: Pick<UserType, 'username' | 'password'>): Promise<UserLoginPayload> => {
+  const user = await User.findOne({ username })
 
   const passwordDecoded: boolean = user
     ? await bcrypt.compare(password, user.password)
@@ -109,8 +111,8 @@ export const loginUser = async ({
     )
   }
 
-  const userForToken: IUserForToken = {
-    name: user.name,
+  const userForToken: UserForToken = {
+    username: user.username,
     id: user.id,
   }
 
@@ -121,10 +123,10 @@ export const loginUser = async ({
   const userToken: string = jwt.sign(userForToken, config.SECRET_USER, {
     expiresIn: 24 * 60 * 60,
   })
-  return { userToken, name: user.name }
+  return { userToken, username: user.username, role: user.role }
 }
 
-export const getAllUsers = async (): Promise<IUser[] | Error> => {
-  const users: IUser[] = await User.find({})
+export const getAllUsers = async (): Promise<UserType[] | Error> => {
+  const users: UserType[] = await User.find({})
   return users
 }

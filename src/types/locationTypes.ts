@@ -1,4 +1,4 @@
-export type provinceTypes =
+export type ProvinceTypes =
   | 'Azuay'
   | 'Bolívar'
   | 'Cañar'
@@ -24,16 +24,16 @@ export type provinceTypes =
   | 'Tungurahua'
   | 'Zamora'
 
-export type categoryLocationTypes =
+export type CategoryLocationTypes =
   | 'Área Urbana'
   | 'Área Rural'
   | 'Área Natural'
 
-export interface ILocation {
+export interface LocationType {
   name: string
   description: string
-  category: categoryLocationTypes
-  province: provinceTypes
+  category: CategoryLocationTypes
+  province: ProvinceTypes
   city: string
   weather: string
   accessibility: string

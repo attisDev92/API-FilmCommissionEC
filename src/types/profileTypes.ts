@@ -3,7 +3,7 @@ import { ObjectId } from 'mongoose'
 type identificationTipe = 'Cédula' | 'Pasaporte' | 'RUC'
 type genreType = 'Hombre' | 'Mujer' | 'No especificado'
 
-export interface IUserProfile {
+export interface UserProfile {
   typeIdentification: identificationTipe
   identification: string
   country: string

@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
-import { IUserProfile } from '../types/profileTypes'
+import { UserProfile } from '../types/profileTypes'
 
-const userProfileSchema = new Schema<IUserProfile>({
+const userProfileSchema = new Schema<UserProfile>({
   typeIdentification: {
     type: String,
     required: true,
@@ -63,6 +63,6 @@ userProfileSchema.set('toJSON', {
 
 userProfileSchema.plugin(mongooseUniqueValidator)
 
-const UserProfile = model<IUserProfile>('UserProfile', userProfileSchema)
+const UserProfile = model<UserProfile>('UserProfile', userProfileSchema)
 
 export default UserProfile

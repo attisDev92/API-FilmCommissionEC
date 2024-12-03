@@ -1,6 +1,6 @@
 import {
-  IUser,
-  IUserForValidateEmail,
+  UserType,
+  UserForValidateEmail,
   UserRoleType,
 } from '../../types/userTypes'
 import User from '../../models/User'
@@ -8,36 +8,36 @@ import config from '../../config/envConfig'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-export const initialUsers: Omit<IUser, 'id'>[] = [
+export const initialUsers: Omit<UserType, 'id'>[] = [
   {
-    name: 'User1',
+    username: 'User1',
     email: 'user1@usermail.com',
     password: 'passworduser1',
   },
   {
-    name: 'User2',
+    username: 'User2',
     email: 'user2@usermail.com',
     password: 'passworduser2',
     role: UserRoleType.ADMIN,
   },
 ]
 
-export const newUser: Omit<IUser, 'id'> = {
-  name: 'Test User',
+export const newUser: Omit<UserType, 'id'> = {
+  username: 'Test User',
   email: 'test@gmail.com',
   password: 'passwordTest',
   role: UserRoleType.CREATOR,
 }
 
-export const invalidUser: Omit<IUser, 'id'> = {
-  name: 'not',
+export const invalidUser: Omit<UserType, 'id'> = {
+  username: 'not',
   email: 'notmail',
   password: '',
 }
 
 export const createInitialUser = async (
-  user: Omit<IUser, 'id'>,
-): Promise<IUser> => {
+  user: Omit<UserType, 'id'>,
+): Promise<UserType> => {
   const passwordHash: string = await bcrypt.hash(user.password, config.SALT)
   const newUser = new User({ ...user, password: passwordHash })
   const userSaved = await newUser.save()
@@ -46,10 +46,10 @@ export const createInitialUser = async (
 }
 
 export const createEmailValidationToken = async (
-  user: IUser,
+  user: UserType,
 ): Promise<string> => {
-  const userForValidateEmail: IUserForValidateEmail = {
-    name: user.name,
+  const userForValidateEmail: UserForValidateEmail = {
+    username: user.username,
     email: user.email,
   }
 
@@ -61,11 +61,11 @@ export const createEmailValidationToken = async (
   return emailToken
 }
 
-export const fetchInitialUsers = async (): Promise<IUser[]> => {
-  let response: IUser[] = []
+export const fetchInitialUsers = async (): Promise<UserType[]> => {
+  let response: UserType[] = []
 
   for (let user of initialUsers) {
-    const newUser: IUser = await createInitialUser(user)
+    const newUser: UserType = await createInitialUser(user)
     response.push(newUser)
   }
 

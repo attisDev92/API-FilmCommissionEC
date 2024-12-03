@@ -8,8 +8,8 @@ export enum UserRoleType {
   VIEWER = 'viewer',
 }
 
-export interface IUser {
-  name: string
+export interface UserType {
+  username: string
   email: string
   password: string
   role?: UserRoleType
@@ -18,19 +18,20 @@ export interface IUser {
   profile?: string
 }
 
-export interface IUserForToken {
-  name: string
+export interface UserForToken {
+  username: string
   id: string
 }
 
-export interface IUserForValidateEmail {
-  name: string
+export interface UserForValidateEmail {
+  username: string
   email: string
 }
 
-export interface IUserLoginPayload {
-  name: string
+export interface UserLoginPayload {
+  username: string
   userToken: string
+  role: UserType['role']
 }
 
 export interface AuthenticatedRequest extends Request {
@@ -38,7 +39,7 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export interface DecodedToken {
-  name?: string
+  username?: string
   id?: string
   iat: string
   exp: string
