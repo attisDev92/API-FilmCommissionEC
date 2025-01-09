@@ -51,7 +51,7 @@ export const sendValidationUserCode = async (user: UserType): Promise<void> => {
     throw new Error('SECRET no se encuentra definido')
   }
   const emailToken: string = jwt.sign(userForValidateEmail, config.SECRET_MAIL)
-  const linkWithTokenForEmail: string = `${config.FrontURL}/system/auth/${emailToken}`
+  const linkWithTokenForEmail: string = `${config.FrontURL}system/auth/${emailToken}`
 
   const emailOptions: EmailOptions = {
     to: user.email,
@@ -99,7 +99,6 @@ export const loginUser = async ({
   password,
 }: Pick<UserType, 'username' | 'password'>): Promise<UserLoginPayload> => {
   const user = await User.findOne({ username })
-
   const passwordDecoded: boolean = user
     ? await bcrypt.compare(password, user.password)
     : false
@@ -108,6 +107,13 @@ export const loginUser = async ({
     throw new CustomError(
       HttpStatus.BAD_REQUEST,
       ErrorsMessage.INVALID_CREDENTIALS,
+    )
+  }
+
+  if (!user?.validation) {
+    throw new CustomError(
+      HttpStatus.BAD_REQUEST,
+      ErrorsMessage.EMAIL_UNAUTHENTICATE,
     )
   }
 
@@ -124,6 +130,59 @@ export const loginUser = async ({
     expiresIn: 24 * 60 * 60,
   })
   return { userToken, username: user.username, role: user.role }
+}
+
+export const sendEmailToRevoverPass = async ({
+  username,
+  email,
+}: Pick<UserType, 'username' | 'email'>) => {
+  const user = await User.findOne({ username })
+
+  if (!user || user.email !== email) {
+    throw new CustomError(HttpStatus.BAD_REQUEST, ErrorsMessage.INVALID_DATA)
+  }
+
+  if (!config.SECRET_MAIL) {
+    throw new Error('SECRET no se encuentra definido')
+  }
+  const emailToken: string = jwt.sign({ username, email }, config.SECRET_MAIL)
+  const linkWithTokenForEmail: string = `${config.FrontURL}system/recover_pass/${emailToken}`
+
+  const emailOptions: EmailOptions = {
+    to: user.email,
+    subject: 'Recuperación de contraseña - Ecuador Filmcommission',
+    text: `Recupera tu correo electrónico`,
+    html: `
+      <p>Hola ${user.username},</p>
+      </br>
+      <p>Para recuperar tu contraseña se debe acceder al siguiente link:</p>
+      <p><strong><a href="${linkWithTokenForEmail}" target="_blank"> RECUPERAR CONTRASEÑA </a></strong></p>
+      </br>
+      <p>Si no has solicitado recuperar tu contraseña ignora este mensaje</p>
+    `,
+  }
+  await sendEmail(emailOptions)
+}
+
+export const changeRecoverPass = async ({
+  userToken,
+  newPassword,
+}: {
+  userToken: string
+  newPassword: string
+}): Promise<UserType | void> => {
+  if (!config.SECRET_MAIL) throw new Error('SECRET de JWT no está definido')
+
+  const decodeToken = jwt.verify(userToken, config.SECRET_MAIL) as JwtPayload
+  const user = await User.findOne({ email: decodeToken.email })
+
+  if (!user)
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+
+  const passwordHash: string = await bcrypt.hash(newPassword, config.SALT)
+
+  user.password = passwordHash
+  return user.save()
 }
 
 export const getAllUsers = async (): Promise<UserType[] | Error> => {

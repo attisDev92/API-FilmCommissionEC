@@ -7,6 +7,7 @@ export enum ErrorsMessage {
   INVALID_TOKEN = 'Token invalido, sin autorización',
   NOT_EXIST = 'El recurso al que intenta acceder no existe',
   SERVER_ERROR = 'Error en el servidor',
+  EMAIL_UNAUTHENTICATE = 'Usuario debe validar su correo antes de iniciar sesión',
 }
 
 export class CustomError extends Error {

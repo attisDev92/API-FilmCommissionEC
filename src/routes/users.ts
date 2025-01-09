@@ -10,6 +10,8 @@ userRouter.post('/login', userControllers.login)
 userRouter.get('/login', verifyToken, userControllers.validateLogin)
 userRouter.get('/auth/:code', userControllers.getUserFromEmailToken)
 userRouter.post('/auth', userControllers.changevalidationUser)
+userRouter.post('/recover_pass', userControllers.recoverUserPass)
+userRouter.post('/change_newpass', userControllers.changeToNewPass)
 userRouter.get('/', verifyToken, verifyAdmin, userControllers.getUsers)
 
 export default userRouter

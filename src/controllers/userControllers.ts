@@ -11,6 +11,8 @@ import {
   validateEmailUser,
   sendValidationUserCode,
   validateUser,
+  sendEmailToRevoverPass,
+  changeRecoverPass,
 } from '../services/usersServices'
 import { HttpResponse } from '../shared/HttpResponse'
 import { CustomError, ErrorsMessage } from '../shared/CustomError'
@@ -116,6 +118,32 @@ const validateLogin = async (
   return httpResponse.ACCEPTED(res, userToken)
 }
 
+const recoverUserPass = async (
+  req: Request,
+  res: Response,
+): Promise<void | Response> => {
+  const userToRecover: Pick<UserType, 'email' | 'username'> = req.body
+  try {
+    await sendEmailToRevoverPass(userToRecover)
+    return httpResponse.ACCEPTED(res, { success: true })
+  } catch (error: any) {
+    return httpResponse.ERROR(res, error.message)
+  }
+}
+
+const changeToNewPass = async (
+  req: Request,
+  res: Response,
+): Promise<void | Response> => {
+  const { userToken, passToChange } = req.body
+  try {
+    await changeRecoverPass({ userToken, newPassword: passToChange })
+    httpResponse.ACCEPTED(res, { success: true })
+  } catch (error: any) {
+    return httpResponse.ERROR(res, error.message)
+  }
+}
+
 const getUsers = async (
   _req: Request,
   res: Response,
@@ -135,4 +163,6 @@ export default {
   getUserFromEmailToken,
   validateLogin,
   changevalidationUser,
+  recoverUserPass,
+  changeToNewPass,
 }
