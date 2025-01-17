@@ -1,18 +1,18 @@
+import { Dayjs } from 'dayjs'
 import { ObjectId } from 'mongoose'
 
 type identificationTipe = 'Cédula' | 'Pasaporte' | 'RUC'
-type genreType = 'Hombre' | 'Mujer' | 'No especificado'
+type genreType = 'Masculino' | 'Femenino' | 'No especificado'
 
 export interface UserProfile {
-  typeIdentification: identificationTipe
-  identification: string
-  country: string
-  residenceCity: string
-  birthdate: Date
-  genre: genreType
   firstName: string
   lastName: string
-  countryCode: string
-  phone: string
+  identificationType: identificationTipe
+  identification: string
+  nationality: string
+  residenceCity: string
+  birthdate: Dayjs
+  cellPhone: string
+  genre: genreType
   userId: ObjectId
 }

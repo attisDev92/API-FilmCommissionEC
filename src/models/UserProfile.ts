@@ -3,7 +3,15 @@ import mongooseUniqueValidator from 'mongoose-unique-validator'
 import { UserProfile } from '../types/profileTypes'
 
 const userProfileSchema = new Schema<UserProfile>({
-  typeIdentification: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  identificationType: {
     type: String,
     required: true,
     enum: ['Cédula', 'Pasaporte', 'RUC'],
@@ -13,7 +21,7 @@ const userProfileSchema = new Schema<UserProfile>({
     require: true,
     unique: true,
   },
-  country: {
+  nationality: {
     type: String,
     required: true,
   },
@@ -25,26 +33,14 @@ const userProfileSchema = new Schema<UserProfile>({
     type: Date,
     required: true,
   },
+  cellPhone: {
+    type: String,
+    required: true,
+  },
   genre: {
     type: String,
-    enum: ['Hombre', 'Mujer', 'No especificado'],
+    enum: ['Masculino', 'Femenino', 'No especificado'],
     require: true,
-  },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  countryCode: {
-    type: String,
-    required: true,
-  },
-  phone: {
-    type: String,
-    required: true,
   },
   userId: {
     type: Schema.ObjectId,

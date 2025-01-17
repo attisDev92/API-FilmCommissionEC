@@ -34,6 +34,12 @@ const userSchema = new Schema<UserType>({
     type: Schema.ObjectId,
     ref: 'UserProfile',
   },
+  locations: [
+    {
+      type: Schema.ObjectId,
+      ref: 'Location',
+    },
+  ],
 })
 
 userSchema.set('toJSON', {

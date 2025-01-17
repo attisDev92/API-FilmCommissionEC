@@ -15,7 +15,8 @@ export interface UserType {
   role?: UserRoleType
   id: ObjectId
   validation?: Boolean
-  profile?: string
+  profile?: ObjectId
+  locations?: ObjectId[]
 }
 
 export interface UserForToken {
@@ -32,6 +33,7 @@ export interface UserLoginPayload {
   username: string
   userToken: string
   role: UserType['role']
+  profile?: string
 }
 
 export interface AuthenticatedRequest extends Request {

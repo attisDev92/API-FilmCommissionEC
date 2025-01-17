@@ -3,6 +3,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import { requestLogger, unknownEndpoint } from './middlewares/infoRequest'
 import userRouter from './routes/users'
+import profileRouter from './routes/profile'
 
 const app: Application = express()
 
@@ -14,14 +15,15 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(requestLogger)
 }
 
+app.use('/api/users', userRouter)
+app.use('/api/profile', profileRouter)
+
 // API health check route
 app.get('/api', (_req, res) => {
   res.send(
     "API de la Comisión Fílmica de Ecuador | API's Ecuadorian Film Commission",
   )
 })
-
-app.use('/api/users', userRouter)
 
 app.use(unknownEndpoint)
 

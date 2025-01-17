@@ -129,7 +129,12 @@ export const loginUser = async ({
   const userToken: string = jwt.sign(userForToken, config.SECRET_USER, {
     expiresIn: 24 * 60 * 60,
   })
-  return { userToken, username: user.username, role: user.role }
+  return {
+    userToken,
+    username: user.username,
+    role: user.role,
+    profile: user.profile ? user.profile : Object(''),
+  }
 }
 
 export const sendEmailToRevoverPass = async ({

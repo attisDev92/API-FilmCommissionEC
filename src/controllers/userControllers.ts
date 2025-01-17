@@ -24,8 +24,8 @@ const createUser = async (
   req: Request,
   res: Response,
 ): Promise<void | Response> => {
+  const body = req.body
   try {
-    const body = req.body
     const newUser = await createNewUser(body)
     await sendValidationUserCode(newUser)
     return httpResponse.CREATED(res, newUser)
