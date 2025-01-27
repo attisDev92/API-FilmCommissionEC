@@ -132,6 +132,7 @@ export const loginUser = async ({
   return {
     userToken,
     username: user.username,
+    email: user.email,
     role: user.role,
     profile: user.profile ? user.profile : Object(''),
   }

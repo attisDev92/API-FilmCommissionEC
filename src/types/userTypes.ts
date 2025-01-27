@@ -32,6 +32,7 @@ export interface UserForValidateEmail {
 export interface UserLoginPayload {
   username: string
   userToken: string
+  email: string
   role: UserType['role']
   profile?: string
 }
