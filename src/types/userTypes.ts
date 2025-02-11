@@ -17,6 +17,7 @@ export interface UserType {
   validation?: Boolean
   profile?: ObjectId
   locations?: ObjectId[]
+  companies?: ObjectId[]
 }
 
 export interface UserForToken {

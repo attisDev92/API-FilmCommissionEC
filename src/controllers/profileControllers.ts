@@ -40,7 +40,6 @@ const postProfile = async (
 
   try {
     const response = await postNewProfile(newProfile)
-    console.log(response)
     return httpResponse.CREATED(res, response)
   } catch (error: any) {
     console.error(error)

@@ -40,6 +40,12 @@ const userSchema = new Schema<UserType>({
       ref: 'Location',
     },
   ],
+  companies: [
+    {
+      type: Schema.ObjectId,
+      ref: 'Service',
+    },
+  ],
 })
 
 userSchema.set('toJSON', {

@@ -5,11 +5,13 @@ import { UserProfile } from '../types/profileTypes'
 const userProfileSchema = new Schema<UserProfile>({
   firstName: {
     type: String,
-    required: true,
+    required: [true, 'El nombre es obligatorio'],
+    minlength: 2,
   },
   lastName: {
     type: String,
-    required: true,
+    minlength: 2,
+    required: [true, 'El apellido es obligatorio'],
   },
   identificationType: {
     type: String,
@@ -18,29 +20,37 @@ const userProfileSchema = new Schema<UserProfile>({
   },
   identification: {
     type: String,
-    require: true,
     unique: true,
+    minlength: 2,
+    require: [true, 'La identificación es obligatoria'],
   },
   nationality: {
     type: String,
-    required: true,
+    minlength: 1,
+    required: [true, 'La nacionalidad es obligatoria'],
   },
   residenceCity: {
     type: String,
-    required: true,
+    minlength: 1,
+    required: [true, 'La ciudad de residencia es obligatoria'],
   },
   birthdate: {
     type: Date,
-    required: true,
+    required: [true, 'La fecha de nacimiento es obligatoria'],
   },
   cellPhone: {
     type: String,
-    required: true,
+    minlength: 7,
+    required: [true, 'El teléfono celular es obligatorio'],
   },
   genre: {
     type: String,
     enum: ['Masculino', 'Femenino', 'No especificado'],
     require: true,
+  },
+  created: {
+    type: Date,
+    default: new Date(),
   },
   userId: {
     type: Schema.ObjectId,

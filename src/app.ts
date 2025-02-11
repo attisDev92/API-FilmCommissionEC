@@ -2,8 +2,11 @@ import express, { Application } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import { requestLogger, unknownEndpoint } from './middlewares/infoRequest'
+
 import userRouter from './routes/users'
 import profileRouter from './routes/profile'
+import locationsRouter from './routes/locations'
+import companyRouter from './routes/companies'
 
 const app: Application = express()
 
@@ -17,6 +20,8 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use('/api/users', userRouter)
 app.use('/api/profile', profileRouter)
+app.use('/api/locations', locationsRouter)
+app.use('/api/companies', companyRouter)
 
 // API health check route
 app.get('/api', (_req, res) => {

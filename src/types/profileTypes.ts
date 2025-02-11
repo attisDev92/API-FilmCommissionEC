@@ -14,5 +14,6 @@ export interface UserProfile {
   birthdate: Dayjs
   cellPhone: string
   genre: genreType
-  userId: ObjectId
+  userId?: ObjectId
+  created?: Date
 }
