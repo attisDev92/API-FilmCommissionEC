@@ -14,6 +14,7 @@ import {
 } from 'firebase/storage'
 import path from 'path'
 import firebaseConfig from '../config/firebaseConfig'
+import { ObjectId } from 'mongoose'
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app)
@@ -25,6 +26,27 @@ export const findCompanyById = async (id: string) => {
   } catch (error) {
     throw new CustomError(HttpStatus.BAD_REQUEST, ErrorsMessage.NOT_EXIST)
   }
+}
+
+export const fetchCompanies = async () => {
+  const companies = await Company.find({})
+
+  if (!companies) {
+    throw new CustomError(
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      ErrorsMessage.SERVER_ERROR,
+    )
+  }
+
+  return companies
+}
+
+export const findUserCompanies = async (userId: ObjectId) => {
+  const companies = await Company.find({ userId })
+  if (!companies) {
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+  }
+  return companies
 }
 
 export const createCompany = async (companyToCreate: CompanyTypes) => {

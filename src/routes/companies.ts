@@ -16,6 +16,8 @@ companyRouter.put(
   uploadTempFiles.any(),
   companyController.updateCompanyFiles,
 )
+companyRouter.get('/user', verifyToken, companyController.getUserCompanies)
+companyRouter.get('/', companyController.getCompanies)
 companyRouter.post('/', verifyToken, companyController.postCompany)
 
 export default companyRouter
