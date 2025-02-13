@@ -5,13 +5,6 @@ dotenv.config()
 
 const PORT = process.env.PORT || 3000
 
-// const MONGO_URI =
-//   process.env.NODE_ENV === 'production'
-//     ? process.env.MONGODB_URI
-//     : process.env.NODE_ENV === 'development'
-//       ? process.env.MONGODB_URI_DEV
-//       : process.env.MONGODB_URI_TEST
-
 const FrontURL =
   process.env.NODE_ENV === 'production'
     ? process.env.FRONT_PRODUCTION
@@ -23,27 +16,37 @@ const MAIL = process.env.MAIL_USER
 const MAIL_PASSWORD = process.env.MAIL_PASSWORD
 const SECRET_MAIL = process.env.SECRET_EMAIL_WORD
 
-let MONGO_URI
-let firebaseStorage
-let allowedOrigins
+// Definir MONGO_URI según el entorno
+let MONGO_URI: string
+let firebaseStorage: string
+let allowedOrigins: string[]
 
-if (process.env.NODE_ENV === 'production') {
-  MONGO_URI = process.env.MONGODB_URI
-  firebaseStorage = process.env.FIREBASE_STORAGE
-  allowedOrigins = ['https://ecuadorfilmcommission.com']
-} else if (process.env.NODE_ENV === 'development') {
-  MONGO_URI = process.env.MONGODB_URI_DEV
-  firebaseStorage = process.env.FIREBASE_STORAGE_DEV
-  allowedOrigins = [process.env.FRONT_DEV]
-} else if (process.env.NODE_ENV === 'test') {
-  MONGO_URI = process.env.MONGODB_URI_TEST
-  firebaseStorage = process.env.FIREBASE_STORAGE_TEST
-  allowedOrigins = [process.env.FRONT_DEV]
-} else {
-  error('NODE_ENV is invalid')
-  if (!MONGO_URI) {
-    throw new Error('Database URI is not defined for the current environment')
-  }
+switch (process.env.NODE_ENV) {
+  case 'production':
+    MONGO_URI = process.env.MONGODB_URI || ''
+    firebaseStorage = process.env.FIREBASE_STORAGE || ''
+    allowedOrigins = ['https://ecuadorfilmcommission.com']
+    break
+  case 'development':
+    MONGO_URI = process.env.MONGODB_URI_DEV || ''
+    firebaseStorage = process.env.FIREBASE_STORAGE_DEV || ''
+    allowedOrigins = [process.env.FRONT_DEV || '']
+    break
+  case 'test':
+    MONGO_URI = process.env.MONGODB_URI_TEST || ''
+    firebaseStorage = process.env.FIREBASE_STORAGE_TEST || ''
+    allowedOrigins = [process.env.FRONT_DEV || '']
+    break
+  default:
+    error('NODE_ENV is invalid')
+    throw new Error(
+      'NODE_ENV is not set to a valid value (production, development, test)',
+    )
+}
+
+// Verificar que MONGO_URI esté definido
+if (!MONGO_URI) {
+  throw new Error('Database URI is not defined for the current environment')
 }
 
 export default {
