@@ -5,6 +5,9 @@ import uploadTempFiles from '../middlewares/multer'
 
 const companyRouter = Router()
 
+companyRouter.get('/user', verifyToken, companyController.getUserCompanies)
+companyRouter.get('/', companyController.getCompanies)
+companyRouter.post('/', verifyToken, companyController.postCompany)
 companyRouter.put(
   '/files/delete',
   verifyToken,
@@ -16,10 +19,6 @@ companyRouter.put(
   uploadTempFiles.any(),
   companyController.updateCompanyFiles,
 )
-companyRouter.put('/edit/:id', verifyToken)
+companyRouter.put('/edit', verifyToken, companyController.updateCompany)
 companyRouter.delete('/:id', verifyToken, companyController.deleteCompany)
-companyRouter.get('/user', verifyToken, companyController.getUserCompanies)
-companyRouter.get('/', companyController.getCompanies)
-companyRouter.post('/', verifyToken, companyController.postCompany)
-
 export default companyRouter

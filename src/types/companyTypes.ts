@@ -26,4 +26,5 @@ export interface CompanyTypes {
   public?: boolean
   created?: Date
   activeWhatsapp?: boolean
+  id?: string
 }

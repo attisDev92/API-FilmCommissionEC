@@ -169,6 +169,24 @@ export const deleteCompanyFile = async (company: any, fileId: string) => {
   }
 }
 
+export const updateCompanyServices = async (companyToUpdate: CompanyTypes) => {
+  const company = await Company.findById(companyToUpdate.id)
+
+  if (!company) {
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+  }
+
+  Object.keys(companyToUpdate).forEach(key => {
+    const typedKey = key as keyof CompanyTypes
+    if (companyToUpdate[typedKey] !== undefined) {
+      company[typedKey] = companyToUpdate[typedKey]
+    }
+  })
+
+  await company.save()
+  return company
+}
+
 export const destroyCompany = async (companyId: string) => {
   const company = await Company.findById(companyId)
 

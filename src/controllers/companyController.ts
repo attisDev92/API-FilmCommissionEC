@@ -7,6 +7,7 @@ import {
   fetchCompanies,
   findCompanyById,
   findUserCompanies,
+  updateCompanyServices,
 } from '../services/companiesServices'
 import { CompanyTypes } from '../types/companyTypes'
 import { ErrorsMessage, CustomError } from '../shared/CustomError'
@@ -173,6 +174,27 @@ const deleteCompany = async (
   }
 }
 
+const updateCompany = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void | Response> => {
+  const companyToUpdate = req.body
+
+  try {
+    const companyUpdated = await updateCompanyServices(companyToUpdate)
+    return httpResponse.OK(res, companyUpdated)
+  } catch (error: any) {
+    console.error(error)
+    if (error instanceof CustomError) {
+      switch (error.message) {
+        case ErrorsMessage.NOT_EXIST:
+          return httpResponse.NOT_FOUND(res, error.message)
+      }
+    }
+    return httpResponse.ERROR(res, error.message)
+  }
+}
+
 export default {
   getCompanies,
   getUserCompanies,
@@ -180,4 +202,5 @@ export default {
   updateCompanyFiles: updateCompanyFilesController,
   deleteCompanyFile: deleteCompanyFileController,
   deleteCompany,
+  updateCompany,
 }
