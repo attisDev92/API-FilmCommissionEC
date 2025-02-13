@@ -1,6 +1,7 @@
 import config from './envConfig'
 
 console.log(config.allowedOrigins)
+
 interface CorsConfig {
   origin: (
     origin: string | undefined,
@@ -11,9 +12,12 @@ interface CorsConfig {
 
 const corsConfig: CorsConfig = {
   origin: function (origin, callback) {
+    // Verificar si origin es undefined y proporcionar un valor por defecto
+    const originToCheck = origin || ''
+
     if (
-      (config.allowedOrigins && config.allowedOrigins.indexOf(origin) !== -1) ||
-      !origin
+      config.allowedOrigins &&
+      config.allowedOrigins.indexOf(originToCheck) !== -1
     ) {
       callback(null, true)
     } else {
