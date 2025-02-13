@@ -3,6 +3,7 @@ import { CompanyTypes } from '../types/companyTypes'
 import { CustomError, ErrorsMessage } from '../shared/CustomError'
 import { HttpStatus } from '../shared/HttpResponse'
 import User from '../models/User'
+import config from '../config/envConfig'
 
 import { initializeApp } from 'firebase/app'
 import {
@@ -81,7 +82,7 @@ export const createCompany = async (companyToCreate: CompanyTypes) => {
 export const updateCompanyFiles = async (company: any, file: any) => {
   try {
     const fileExtension = path.extname(file.originalname)
-    const fileName = `<span class="math-inline">\{config\.firebaseStorage\}/</span>{company.company.replace(/ /g, '_')}/<span class="math-inline">\{file\.fieldname\}\_</span>{Date.now()}${fileExtension}`
+    const fileName = `${config.firebaseStorage}/${company.company.replace(/ /g, '_')}/${file.fieldname}_${Date.now()}${fileExtension}`
     const storageRef = ref(storage, fileName)
 
     if (file.fieldname === 'logo') {
