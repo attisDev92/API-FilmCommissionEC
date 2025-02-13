@@ -16,6 +16,8 @@ companyRouter.put(
   uploadTempFiles.any(),
   companyController.updateCompanyFiles,
 )
+companyRouter.put('/edit/:id', verifyToken)
+companyRouter.delete('/:id', verifyToken, companyController.deleteCompany)
 companyRouter.get('/user', verifyToken, companyController.getUserCompanies)
 companyRouter.get('/', companyController.getCompanies)
 companyRouter.post('/', verifyToken, companyController.postCompany)

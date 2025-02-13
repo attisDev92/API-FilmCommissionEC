@@ -23,5 +23,7 @@ export interface CompanyTypes {
   logo: file
   photos: file[]
   userId: ObjectId
+  public?: boolean
   created?: Date
+  activeWhatsapp?: boolean
 }

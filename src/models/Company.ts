@@ -82,6 +82,14 @@ const companySchema = new Schema<CompanyTypes>({
     ref: 'User',
     required: true,
   },
+  public: {
+    type: Boolean,
+    default: true,
+  },
+  activeWhatsapp: {
+    type: Boolean,
+    default: false,
+  },
   created: {
     type: Date,
     default: new Date(),

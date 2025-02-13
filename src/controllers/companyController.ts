@@ -3,6 +3,7 @@ import { HttpResponse } from '../shared/HttpResponse'
 import { AuthenticatedRequest, UserType } from '../types/userTypes'
 import {
   createCompany,
+  destroyCompany,
   fetchCompanies,
   findCompanyById,
   findUserCompanies,
@@ -14,6 +15,7 @@ import {
   deleteCompanyFile,
 } from '../services/companiesServices'
 import { MongooseError, ObjectId } from 'mongoose'
+import { deleteCompanyIdFromUser } from '../services/usersServices'
 
 const httpResponse = new HttpResponse()
 
@@ -143,10 +145,39 @@ const deleteCompanyFileController = async (
     return httpResponse.ERROR(res, { error: (error as any).message })
   }
 }
+
+const deleteCompany = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void | Response> => {
+  const companyId = req.params.id
+  const { id } = req.userToken as { id: ObjectId }
+
+  try {
+    await destroyCompany(companyId)
+    await deleteCompanyIdFromUser(companyId, id.toString())
+    httpResponse.OK(res)
+  } catch (error: any) {
+    console.error(error)
+    if (error instanceof CustomError) {
+      switch (error.message) {
+        case ErrorsMessage.NOT_EXIST:
+          return httpResponse.NOT_FOUND(res, error.message)
+        case ErrorsMessage.SERVER_ERROR:
+          return httpResponse.BAD_REQUEST(res, error.message)
+        default:
+          return httpResponse.ERROR(res, error.message)
+      }
+    }
+    return httpResponse.ERROR(res, error.message)
+  }
+}
+
 export default {
   getCompanies,
   getUserCompanies,
   postCompany,
   updateCompanyFiles: updateCompanyFilesController,
   deleteCompanyFile: deleteCompanyFileController,
+  deleteCompany,
 }

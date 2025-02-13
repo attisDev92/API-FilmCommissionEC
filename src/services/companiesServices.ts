@@ -168,3 +168,13 @@ export const deleteCompanyFile = async (company: any, fileId: string) => {
     throw error
   }
 }
+
+export const destroyCompany = async (companyId: string) => {
+  const company = await Company.findById(companyId)
+
+  if (!company) {
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+  }
+
+  await Company.deleteOne({ _id: companyId })
+}

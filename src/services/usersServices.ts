@@ -192,6 +192,31 @@ export const changeRecoverPass = async ({
 }
 
 export const getAllUsers = async (): Promise<UserType[] | Error> => {
-  const users: UserType[] = await User.find({})
+  const users = await User.find({})
   return users
+}
+
+export const deleteCompanyIdFromUser = async (
+  companyId: string,
+  userId: string,
+) => {
+  const user = await User.findById(userId)
+
+  if (!user) {
+    throw new CustomError(HttpStatus.BAD_REQUEST, ErrorsMessage.INVALID_DATA)
+  }
+
+  const companyExists = user.companies?.some(
+    company => company.toString() === companyId,
+  )
+
+  if (!companyExists) {
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+  }
+
+  user.companies = user.companies?.filter(
+    company => company.toString() !== companyId,
+  )
+
+  await user.save()
 }
