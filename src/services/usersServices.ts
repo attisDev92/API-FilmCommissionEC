@@ -60,7 +60,7 @@ export const sendValidationUserCode = async (user: UserType): Promise<void> => {
     html: `
       <p>Hola ${user.username},</p>
       </br>
-      <p>Para continuar con el registro como usuario del catálogo de locaciones de Ecuador Film Commission</p>
+      <p>Para continuar con el registro como usuario de la Comisión Fílmica de Ecuador</p>
       <p>debes verificar tu mail ingresando al siguiente link: <strong><a href="${linkWithTokenForEmail}" target="_blank"> VERIFICAR EMAIL </a></strong></p>
       </br>
       <p>Si no te has registrado en esta web, por favor ignora este mensaje</p>
