@@ -8,6 +8,7 @@ const companyRouter = Router()
 companyRouter.get('/user', verifyToken, companyController.getUserCompanies)
 companyRouter.get('/', companyController.getCompanies)
 companyRouter.post('/', verifyToken, companyController.postCompany)
+companyRouter.get('/:id', companyController.getCompany)
 companyRouter.put(
   '/files/delete',
   verifyToken,

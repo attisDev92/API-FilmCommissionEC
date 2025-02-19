@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { HttpResponse } from '../shared/HttpResponse'
 import { AuthenticatedRequest, UserType } from '../types/userTypes'
 import {
@@ -21,6 +21,25 @@ import { deleteCompanyIdFromUser } from '../services/usersServices'
 const httpResponse = new HttpResponse()
 
 interface GetCompaniesRequest extends AuthenticatedRequest {}
+
+const getCompany = async (
+  req: Request,
+  res: Response,
+): Promise<void | Response> => {
+  const { id } = req.params
+  try {
+    const response = await findCompanyById(id)
+    return httpResponse.OK(res, response)
+  } catch (error: any) {
+    if (
+      error instanceof CustomError &&
+      error.message === ErrorsMessage.NOT_EXIST
+    ) {
+      return httpResponse.ERROR(res, error.message)
+    }
+    return httpResponse.ERROR(res, error.message)
+  }
+}
 
 const getCompanies = async (
   _req: GetCompaniesRequest,
@@ -196,6 +215,7 @@ const updateCompany = async (
 }
 
 export default {
+  getCompany,
   getCompanies,
   getUserCompanies,
   postCompany,
