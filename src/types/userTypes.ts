@@ -31,6 +31,7 @@ export interface UserForValidateEmail {
 }
 
 export interface UserLoginPayload {
+  id: string
   username: string
   userToken: string
   email: string
