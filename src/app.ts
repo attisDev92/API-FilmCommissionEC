@@ -7,6 +7,7 @@ import userRouter from './routes/users'
 import profileRouter from './routes/profile'
 import locationsRouter from './routes/locations'
 import companyRouter from './routes/companies'
+import audiovisualProjectsRouter from './routes/audiovisualProjects'
 
 const app: Application = express()
 
@@ -22,6 +23,7 @@ app.use('/api/users', userRouter)
 app.use('/api/profile', profileRouter)
 app.use('/api/locations', locationsRouter)
 app.use('/api/companies', companyRouter)
+app.use('/api/projects', audiovisualProjectsRouter)
 
 // API health check route
 app.get('/api', (_req, res) => {

@@ -1,32 +1,29 @@
 import { Request, Response } from 'express'
 import { HttpResponse } from '../shared/HttpResponse'
 import { AuthenticatedRequest, UserType } from '../types/userTypes'
-import {
-  createCompany,
-  destroyCompany,
-  fetchCompanies,
-  findCompanyById,
-  findUserCompanies,
-  updateCompanyServices,
-  updateCompanyFiles,
-  deleteCompanyFile,
-} from '../services/companiesServices'
-import { CompanyTypes } from '../types/companyTypes'
+import { AudiovisualProjectTypes } from '../types/projectTypes'
 import { ErrorsMessage, CustomError } from '../shared/CustomError'
 import { MongooseError, ObjectId } from 'mongoose'
-import { deleteCompanyIdFromUser } from '../services/usersServices'
+import {
+  createProject,
+  deleteProjectFile,
+  destroyProject,
+  fetchProjets,
+  findProjectById,
+  updateProjectFiles,
+  updateProjectService,
+} from '../services/projectServices'
+import { deleteProjectIdFromUser } from '../services/usersServices'
 
 const httpResponse = new HttpResponse()
 
-interface GetCompaniesRequest extends AuthenticatedRequest {}
-
-const getCompany = async (
+const getProject = async (
   req: Request,
   res: Response,
 ): Promise<void | Response> => {
   const { id } = req.params
   try {
-    const response = await findCompanyById(id)
+    const response = await findProjectById(id)
     return httpResponse.OK(res, response)
   } catch (error: any) {
     if (
@@ -39,15 +36,14 @@ const getCompany = async (
   }
 }
 
-const getCompanies = async (
-  _req: GetCompaniesRequest,
+const getProjects = async (
+  req: Request,
   res: Response,
 ): Promise<void | Response> => {
   try {
-    const response = await fetchCompanies()
+    const response = await fetchProjets()
     return httpResponse.OK(res, response)
   } catch (error: any) {
-    console.error(error)
     if (
       error instanceof CustomError &&
       error.message === ErrorsMessage.SERVER_ERROR
@@ -58,39 +54,20 @@ const getCompanies = async (
   }
 }
 
-const getUserCompanies = async (
-  req: AuthenticatedRequest,
-  res: Response,
-): Promise<void | Response> => {
-  const { id } = req.userToken as { id: ObjectId }
-  try {
-    const response = await findUserCompanies(id)
-    return httpResponse.OK(res, response)
-  } catch (error: any) {
-    if (
-      error instanceof CustomError &&
-      error.message === ErrorsMessage.INVALID_DATA
-    ) {
-      return httpResponse.ERROR(res, error.message)
-    }
-    return httpResponse.ERROR(res, error.message)
-  }
-}
-
-const postCompany = async (
+const postProject = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void | Response> => {
   const { id } = req.userToken as Pick<UserType, 'id'>
   const { body } = req
 
-  const companyToCreate: CompanyTypes = {
+  const projectToCreate: AudiovisualProjectTypes = {
     ...body,
     userId: id,
   }
 
   try {
-    const response = await createCompany(companyToCreate)
+    const response = await createProject(projectToCreate)
     return httpResponse.CREATED(res, response)
   } catch (error: any) {
     console.error(error)
@@ -112,15 +89,35 @@ const postCompany = async (
   }
 }
 
-const updateCompanyFilesController = async (
+const updateProject = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void | Response> => {
+  const projectToUpdate = req.body
+  try {
+    const projectUpdated = await updateProjectService(projectToUpdate)
+    return httpResponse.OK(res, projectUpdated)
+  } catch (error: any) {
+    console.error(error)
+    if (error instanceof CustomError) {
+      switch (error.message) {
+        case ErrorsMessage.NOT_EXIST:
+          return httpResponse.NOT_FOUND(res, error.message)
+      }
+    }
+    return httpResponse.ERROR(res, error.message)
+  }
+}
+
+const updateProjectFilesController = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void | Response> => {
   try {
-    const { companyId } = req.body
-    const company = await findCompanyById(companyId)
+    const { projectId } = req.body
+    const project = await findProjectById(projectId)
 
-    if (!company) {
+    if (!project) {
       return httpResponse.BAD_REQUEST(res)
     }
 
@@ -128,8 +125,8 @@ const updateCompanyFilesController = async (
       return httpResponse.BAD_REQUEST(res, { error: 'No files uploaded' })
     }
 
-    const updatedCompany = await updateCompanyFiles(company, req.files[0])
-    return httpResponse.ACCEPTED(res, updatedCompany)
+    const updatedProject = await updateProjectFiles(project, req.files[0])
+    return httpResponse.ACCEPTED(res, updatedProject)
   } catch (error: any) {
     console.error('Error en updateCompanyFilesController:', error)
     if (error instanceof CustomError) {
@@ -139,22 +136,21 @@ const updateCompanyFilesController = async (
   }
 }
 
-const deleteCompanyFileController = async (
+const deleteProjectFileController = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void | Response> => {
+  const { projectId, fileId } = req.body
   try {
-    const { companyId, fileId } = req.body
-    const company = await findCompanyById(companyId)
+    const project = await findProjectById(projectId)
 
-    if (!company) {
+    if (!project) {
       return httpResponse.BAD_REQUEST(res)
     }
 
-    const updatedCompany = await deleteCompanyFile(company, fileId)
-
-    return httpResponse.ACCEPTED(res, updatedCompany)
-  } catch (error: any) {
+    const updatedProject = await deleteProjectFile(project, fileId)
+    return httpResponse.ACCEPTED(res, updatedProject)
+  } catch (error) {
     console.error('Error en deleteCompanyFileController:', error)
     if (error instanceof CustomError) {
       return httpResponse.ERROR(res, error.message)
@@ -163,16 +159,16 @@ const deleteCompanyFileController = async (
   }
 }
 
-const deleteCompany = async (
+const deleteProject = async (
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void | Response> => {
-  const companyId = req.params.id
+  const projectId = req.params.id
   const { id } = req.userToken as Pick<UserType, 'id'>
 
   try {
-    await destroyCompany(companyId)
-    await deleteCompanyIdFromUser(companyId, id.toString())
+    await destroyProject(projectId)
+    await deleteProjectIdFromUser(projectId, id.toString())
     httpResponse.OK(res)
   } catch (error: any) {
     console.error(error)
@@ -190,34 +186,12 @@ const deleteCompany = async (
   }
 }
 
-const updateCompany = async (
-  req: AuthenticatedRequest,
-  res: Response,
-): Promise<void | Response> => {
-  const companyToUpdate = req.body
-
-  try {
-    const companyUpdated = await updateCompanyServices(companyToUpdate)
-    return httpResponse.OK(res, companyUpdated)
-  } catch (error: any) {
-    console.error(error)
-    if (error instanceof CustomError) {
-      switch (error.message) {
-        case ErrorsMessage.NOT_EXIST:
-          return httpResponse.NOT_FOUND(res, error.message)
-      }
-    }
-    return httpResponse.ERROR(res, error.message)
-  }
-}
-
 export default {
-  getCompany,
-  getCompanies,
-  getUserCompanies,
-  postCompany,
-  updateCompanyFiles: updateCompanyFilesController,
-  deleteCompanyFile: deleteCompanyFileController,
-  deleteCompany,
-  updateCompany,
+  getProject,
+  getProjects,
+  postProject,
+  updateProject,
+  updateProjectFiles: updateProjectFilesController,
+  deleteProjectFiles: deleteProjectFileController,
+  deleteProject,
 }

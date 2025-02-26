@@ -18,6 +18,7 @@ export interface UserType {
   profile?: ObjectId
   locations?: ObjectId[]
   companies?: ObjectId[]
+  audiovisualProjects?: ObjectId[]
 }
 
 export interface UserForToken {

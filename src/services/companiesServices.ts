@@ -51,11 +51,8 @@ export const findUserCompanies = async (userId: ObjectId) => {
 }
 
 export const createCompany = async (companyToCreate: CompanyTypes) => {
-  console.log(companyToCreate)
-
   const user = await User.findById(companyToCreate.userId)
 
-  console.log(user)
   if (!user) {
     throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
   }

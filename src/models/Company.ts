@@ -22,6 +22,7 @@ const companySchema = new Schema<CompanyTypes>({
   },
   city: {
     type: String,
+    minlength: 2,
     required: true,
   },
   direction: {
@@ -30,10 +31,12 @@ const companySchema = new Schema<CompanyTypes>({
   },
   description: {
     type: String,
+    minlength: 100,
     required: true,
   },
   descriptionENG: {
     type: String,
+    minlength: 100,
     required: true,
   },
   clients: {

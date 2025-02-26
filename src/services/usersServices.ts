@@ -221,3 +221,28 @@ export const deleteCompanyIdFromUser = async (
 
   await user.save()
 }
+
+export const deleteProjectIdFromUser = async (
+  projectId: string,
+  userId: string,
+) => {
+  const user = await User.findById(userId)
+
+  if (!user) {
+    throw new CustomError(HttpStatus.BAD_REQUEST, ErrorsMessage.INVALID_DATA)
+  }
+
+  const projectExist = user.audiovisualProjects?.some(
+    project => project.toString() === projectId,
+  )
+
+  if (!projectExist) {
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+  }
+
+  user.audiovisualProjects = user.audiovisualProjects?.filter(
+    project => project.toString() !== projectId,
+  )
+
+  await user.save()
+}

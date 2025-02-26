@@ -22,4 +22,5 @@ companyRouter.put(
 )
 companyRouter.put('/edit', verifyToken, companyController.updateCompany)
 companyRouter.delete('/:id', verifyToken, companyController.deleteCompany)
+
 export default companyRouter

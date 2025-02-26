@@ -46,6 +46,12 @@ const userSchema = new Schema<UserType>({
       ref: 'Service',
     },
   ],
+  audiovisualProjects: [
+    {
+      type: Schema.ObjectId,
+      ref: 'AudiovisualProject',
+    },
+  ],
 })
 
 userSchema.set('toJSON', {
