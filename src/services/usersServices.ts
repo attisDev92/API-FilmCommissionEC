@@ -246,3 +246,28 @@ export const deleteProjectIdFromUser = async (
 
   await user.save()
 }
+
+export const deleteLocationFromUser = async (
+  locationId: string,
+  userId: string,
+) => {
+  const user = await User.findById(userId)
+
+  if (!user) {
+    throw new CustomError(HttpStatus.BAD_REQUEST, ErrorsMessage.INVALID_DATA)
+  }
+
+  const locationExist = user.locations?.some(
+    location => location.toString() === locationId,
+  )
+
+  if (!locationExist) {
+    throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+  }
+
+  user.locations = user.locations?.filter(
+    location => location.toString() !== locationId,
+  )
+
+  await user.save()
+}

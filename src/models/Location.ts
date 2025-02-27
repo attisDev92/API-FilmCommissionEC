@@ -1,17 +1,32 @@
-import mongooseUniqueValidator from 'mongoose-unique-validator'
-
 import { Schema, model } from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
+import { LocationTypes } from '../types/locationTypes'
 
-const locationSchema = new Schema({
+const locationSchema = new Schema<LocationTypes>({
   name: {
     type: String,
-    required: true,
     minlength: 5,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ['Público', 'Privado'],
+    required: true,
   },
   description: {
     type: String,
+    minlength: 50,
     required: true,
-    minlength: 10,
+  },
+  category: {
+    type: String,
+    minlength: 50,
+    enum: ['Urbano', 'Rutal', 'Natural'],
+    required: true,
+  },
+  subCategory: {
+    type: [String],
+    required: true,
   },
   province: {
     type: String,
@@ -48,30 +63,73 @@ const locationSchema = new Schema({
     minlength: 3,
     required: true,
   },
+  requestInformation: {
+    type: String,
+    minlength: 50,
+    required: true,
+  },
   weather: {
+    type: String,
+    minlength: 3,
+    enum: [
+      'Cálido',
+      'Húmedo',
+      'Seco',
+      'Semiseco',
+      'Frío',
+      'Templado',
+      'Tropical',
+      'Polar',
+    ],
+    required: true,
+  },
+  accessibilities: {
+    type: [String],
+    required: true,
+  },
+  contactName: {
     type: String,
     minlength: 3,
     required: true,
   },
-  accessibility: {
+  email: {
     type: String,
-    minlength: 3,
+    minlength: 5,
+    required: true,
+  },
+  phone: {
+    type: String,
+    minlength: 10,
     required: true,
   },
   direction: {
     type: String,
     minlength: 3,
-    required: true,
   },
-  map: {
-    type: String,
-    minlength: 3,
-    required: true,
+  cordinates: {
+    type: [String],
   },
-  contact: {
-    type: String,
-    minlength: 3,
-    required: true,
+  photos: {
+    type: [
+      {
+        url: {
+          type: String,
+        },
+      },
+    ],
+    default: {},
+  },
+  public: {
+    type: Boolean,
+    default: true,
+  },
+  activeWhatsapp: {
+    type: Boolean,
+    default: false,
+  },
+  created: {
+    type: Date,
+    default: new Date(),
   },
   userId: {
     type: Schema.ObjectId,
@@ -90,6 +148,6 @@ locationSchema.set('toJSON', {
 
 locationSchema.plugin(mongooseUniqueValidator)
 
-const Location = model('Location', locationSchema)
+const Location = model<LocationTypes>('Location', locationSchema)
 
 export default Location

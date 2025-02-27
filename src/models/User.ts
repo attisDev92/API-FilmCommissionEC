@@ -43,7 +43,7 @@ const userSchema = new Schema<UserType>({
   companies: [
     {
       type: Schema.ObjectId,
-      ref: 'Service',
+      ref: 'Company',
     },
   ],
   audiovisualProjects: [

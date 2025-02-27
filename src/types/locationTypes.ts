@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongoose'
+
 export type ProvinceTypes =
   | 'Azuay'
   | 'Bolívar'
@@ -24,20 +26,56 @@ export type ProvinceTypes =
   | 'Tungurahua'
   | 'Zamora'
 
-export type CategoryLocationTypes =
-  | 'Área Urbana'
-  | 'Área Rural'
-  | 'Área Natural'
+type Areas = 'Urbano' | 'Rural' | 'Natural'
 
-export interface LocationType {
+type UrbanArea =
+  | 'Moderno'
+  | 'Histórico'
+  | 'Residencial'
+  | 'Parques y Plazas'
+  | 'Deportivos'
+  | 'Cultural'
+  | 'Negocios y Comercios'
+
+type RuralArea = 'Pueblos' | 'Carreteras'
+
+type NaturalArea = 'Reservas Ecológicas' | 'Playas'
+
+type WeatherTypes =
+  | 'Cálido'
+  | 'Húmedo'
+  | 'Seco'
+  | 'Semiseco'
+  | 'Frío'
+  | 'Templado'
+  | 'Tropical'
+  | 'Polar'
+
+interface file {
+  url: string
+  _id?: ObjectId
+}
+
+export interface LocationTypes {
+  id?: string
   name: string
+  type: 'Público' | 'Privado'
   description: string
-  category: CategoryLocationTypes
+  category: Areas
+  subCategory: (UrbanArea | RuralArea | NaturalArea)[]
   province: ProvinceTypes
   city: string
-  weather: string
-  accessibility: string
-  direction: string
-  map: string
-  contact: string
+  requestInformation: string
+  weather: WeatherTypes
+  accessibilities: string[]
+  contactName: string
+  email: string
+  phone: string
+  direction?: string
+  cordinates?: string[]
+  photos?: file[]
+  public?: boolean
+  created?: Date
+  activeWhatsapp?: boolean
+  userId?: ObjectId
 }
