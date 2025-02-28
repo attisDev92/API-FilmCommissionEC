@@ -109,6 +109,6 @@ companySchema.set('toJSON', {
 
 companySchema.plugin(mongooseUniqueValidator)
 
-const Company = model<CompanyTypes>('Company', companySchema)
+const Company = model<CompanyTypes>('Services', companySchema)
 
 export default Company

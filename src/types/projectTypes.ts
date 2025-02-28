@@ -21,6 +21,7 @@ export interface AudiovisualProjectTypes {
   subGenres: string[]
   currentSituation: 'Producción' | 'Post-Producción' | 'Distribución'
   needs: string
+  needsENG: string
   email: string
   phone: string
   website?: string

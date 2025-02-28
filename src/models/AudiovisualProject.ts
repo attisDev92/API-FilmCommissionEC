@@ -66,6 +66,10 @@ const audiovisualProjectSchema = new Schema<AudiovisualProjectTypes>({
     type: String,
     required: true,
   },
+  needsENG: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -114,7 +118,6 @@ const audiovisualProjectSchema = new Schema<AudiovisualProjectTypes>({
   },
   trailer: {
     type: String,
-    minlength: 10,
   },
   public: {
     type: Boolean,
