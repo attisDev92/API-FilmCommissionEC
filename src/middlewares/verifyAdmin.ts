@@ -1,8 +1,8 @@
 import { Response, NextFunction } from 'express'
-import User from '../models/User'
+import User from '../modules/users/schemas/User'
 import { HttpResponse } from '../shared/HttpResponse'
 import { ErrorsMessage } from '../shared/CustomError'
-import { RequestDecodedToken } from '../types/userTypes'
+import { RequestDecodedToken } from '../modules/users/interfaces/user.interface'
 
 const httpResponse = new HttpResponse()
 

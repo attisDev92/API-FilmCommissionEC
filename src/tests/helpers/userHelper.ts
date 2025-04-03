@@ -2,9 +2,9 @@ import {
   UserType,
   UserForValidateEmail,
   UserRoleType,
-} from '../../types/userTypes'
-import User from '../../models/User'
-import config from '../../config/envConfig'
+} from '../../modules/users/interfaces/user.interface'
+import User from '../../modules/users/schemas/User'
+import config from '../../config/env.config'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 

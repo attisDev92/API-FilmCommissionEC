@@ -1,6 +1,6 @@
-import config from './config/envConfig'
+import config from './config/env.config'
 import app from './app'
-import connectDataBase from './config/dbConfig'
+import connectDataBase from './config/db.config'
 
 connectDataBase()
 

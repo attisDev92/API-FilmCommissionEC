@@ -1,5 +1,5 @@
 import app from '../app'
-import User from '../models/User'
+import User from '../modules/users/schemas/User'
 import request from 'supertest'
 import {
   newUser,
@@ -8,8 +8,11 @@ import {
   createEmailValidationToken,
   fetchInitialUsers,
 } from './helpers/userHelper'
-import { UserType, UserLoginPayload } from '../types/userTypes'
-import { loginUser } from '../services/users.service'
+import {
+  UserType,
+  UserLoginPayload,
+} from '../modules/users/interfaces/user.interface'
+import { loginUser } from '../modules/users/services/users.service'
 import { initialUsers } from './helpers/userHelper'
 
 describe('User API', (): void => {
