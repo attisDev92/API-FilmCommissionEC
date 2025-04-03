@@ -1,36 +1,36 @@
 import { Router } from 'express'
 import verifyToken from '../middlewares/verifyToken'
-import locationsController from '../controllers/locationsController'
 import uploadTempFiles from '../middlewares/multer'
+import audiovisualProjectController from '../controllers/audiovisualProjects.controller'
 
-const locationsRouter = Router()
+const audiovisualProjectsRouter = Router()
 
 /**
  * @swagger
- * /api/locations:
+ * /api/projects:
  *   get:
- *     tags: [Locations]
- *     summary: Get all locations
- *     description: Retrieve a list of all locations
+ *     tags: [Projects]
+ *     summary: Get all projects
+ *     description: Retrieve a list of all audiovisual projects
  *     responses:
  *       200:
- *         description: List of locations retrieved successfully
+ *         description: List of projects retrieved successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Location'
+ *                 $ref: '#/components/schemas/AudiovisualProject'
  */
-locationsRouter.get('/', locationsController.getLocations)
+audiovisualProjectsRouter.get('/', audiovisualProjectController.getProjects)
 
 /**
  * @swagger
- * /api/locations:
+ * /api/projects:
  *   post:
- *     tags: [Locations]
- *     summary: Create a new location
- *     description: Create a new location with the provided data
+ *     tags: [Projects]
+ *     summary: Create a new project
+ *     description: Create a new audiovisual project
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -38,22 +38,26 @@ locationsRouter.get('/', locationsController.getLocations)
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/AudiovisualProject'
  *     responses:
  *       201:
- *         description: Location created successfully
+ *         description: Project created successfully
  *       401:
  *         description: Unauthorized
  */
-locationsRouter.post('/', verifyToken, locationsController.postLocation)
+audiovisualProjectsRouter.post(
+  '/',
+  verifyToken,
+  audiovisualProjectController.postProject,
+)
 
 /**
  * @swagger
- * /api/locations/{id}:
+ * /api/projects/{id}:
  *   get:
- *     tags: [Locations]
- *     summary: Get location by ID
- *     description: Retrieve a specific location by its ID
+ *     tags: [Projects]
+ *     summary: Get project by ID
+ *     description: Retrieve a specific project by its ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -62,23 +66,23 @@ locationsRouter.post('/', verifyToken, locationsController.postLocation)
  *           type: string
  *     responses:
  *       200:
- *         description: Location retrieved successfully
+ *         description: Project retrieved successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Location'
+ *               $ref: '#/components/schemas/AudiovisualProject'
  *       404:
- *         description: Location not found
+ *         description: Project not found
  */
-locationsRouter.get('/:id', locationsController.getLocation)
+audiovisualProjectsRouter.get('/:id', audiovisualProjectController.getProject)
 
 /**
  * @swagger
- * /api/locations/files/delete:
+ * /api/projects/files/delete:
  *   put:
- *     tags: [Locations]
- *     summary: Delete location files
- *     description: Delete files associated with a location
+ *     tags: [Projects]
+ *     summary: Delete project files
+ *     description: Delete files associated with a project
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -98,19 +102,19 @@ locationsRouter.get('/:id', locationsController.getLocation)
  *       401:
  *         description: Unauthorized
  */
-locationsRouter.put(
+audiovisualProjectsRouter.put(
   '/files/delete',
   verifyToken,
-  locationsController.deleteLocationFile,
+  audiovisualProjectController.deleteProjectFiles,
 )
 
 /**
  * @swagger
- * /api/locations/files:
+ * /api/projects/files:
  *   put:
- *     tags: [Locations]
- *     summary: Update location files
- *     description: Upload or update files associated with a location
+ *     tags: [Projects]
+ *     summary: Update project files
+ *     description: Upload or update files associated with a project
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -131,20 +135,20 @@ locationsRouter.put(
  *       401:
  *         description: Unauthorized
  */
-locationsRouter.put(
+audiovisualProjectsRouter.put(
   '/files',
   verifyToken,
   uploadTempFiles.any(),
-  locationsController.updateLocationFiles,
+  audiovisualProjectController.updateProjectFiles,
 )
 
 /**
  * @swagger
- * /api/locations/edit:
+ * /api/projects/edit:
  *   put:
- *     tags: [Locations]
- *     summary: Update location
- *     description: Update location information
+ *     tags: [Projects]
+ *     summary: Update project
+ *     description: Update project information
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -152,22 +156,26 @@ locationsRouter.put(
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Location'
+ *             $ref: '#/components/schemas/AudiovisualProject'
  *     responses:
  *       200:
- *         description: Location updated successfully
+ *         description: Project updated successfully
  *       401:
  *         description: Unauthorized
  */
-locationsRouter.put('/edit', verifyToken, locationsController.updateLocation)
+audiovisualProjectsRouter.put(
+  '/edit',
+  verifyToken,
+  audiovisualProjectController.updateProject,
+)
 
 /**
  * @swagger
- * /api/locations/{id}:
+ * /api/projects/{id}:
  *   delete:
- *     tags: [Locations]
- *     summary: Delete location
- *     description: Delete a location by its ID
+ *     tags: [Projects]
+ *     summary: Delete project
+ *     description: Delete a project by its ID
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -178,12 +186,16 @@ locationsRouter.put('/edit', verifyToken, locationsController.updateLocation)
  *           type: string
  *     responses:
  *       200:
- *         description: Location deleted successfully
+ *         description: Project deleted successfully
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: Location not found
+ *         description: Project not found
  */
-locationsRouter.delete('/:id', verifyToken, locationsController.deleteLocation)
+audiovisualProjectsRouter.delete(
+  '/:id',
+  verifyToken,
+  audiovisualProjectController.deleteProject,
+)
 
-export default locationsRouter
+export default audiovisualProjectsRouter

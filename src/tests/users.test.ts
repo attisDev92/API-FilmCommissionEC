@@ -9,7 +9,7 @@ import {
   fetchInitialUsers,
 } from './helpers/userHelper'
 import { UserType, UserLoginPayload } from '../types/userTypes'
-import { loginUser } from '../services/usersServices'
+import { loginUser } from '../services/users.service'
 import { initialUsers } from './helpers/userHelper'
 
 describe('User API', (): void => {

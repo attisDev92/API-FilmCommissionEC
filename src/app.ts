@@ -5,11 +5,11 @@ import swaggerUi from 'swagger-ui-express'
 import { swaggerSpec } from './config/swagger'
 import { requestLogger, unknownEndpoint } from './middlewares/infoRequest'
 
-import userRouter from './routes/users'
-import profileRouter from './routes/profile'
-import locationsRouter from './routes/locations'
-import companyRouter from './routes/companies'
-import audiovisualProjectsRouter from './routes/audiovisualProjects'
+import userRouter from './routes/users.route'
+import profileRouter from './routes/profile.route'
+import locationsRouter from './routes/locations.route'
+import companyRouter from './routes/companies.route'
+import audiovisualProjectsRouter from './routes/audiovisualProjects.route'
 
 const app: Application = express()
 

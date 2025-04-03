@@ -12,8 +12,8 @@ import {
   findProjectById,
   updateProjectFiles,
   updateProjectService,
-} from '../services/projectServices'
-import { deleteProjectIdFromUser } from '../services/usersServices'
+} from '../services/project.service'
+import { deleteProjectIdFromUser } from '../services/users.service'
 
 const httpResponse = new HttpResponse()
 

@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { AuthenticatedRequest, UserType } from '../types/userTypes'
-import { getProfileFromUser, postNewProfile } from '../services/profileServices'
+import { getProfileFromUser, postNewProfile } from '../services/profile.service'
 import { HttpResponse } from '../shared/HttpResponse'
 import { CustomError, ErrorsMessage } from '../shared/CustomError'
 import { UserProfile } from '../types/profileTypes'

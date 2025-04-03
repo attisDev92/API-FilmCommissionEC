@@ -10,11 +10,11 @@ import {
   updateCompanyServices,
   updateCompanyFiles,
   deleteCompanyFile,
-} from '../services/companiesServices'
+} from '../services/companies.service'
 import { CompanyTypes } from '../types/companyTypes'
 import { ErrorsMessage, CustomError } from '../shared/CustomError'
 import { MongooseError, ObjectId } from 'mongoose'
-import { deleteCompanyIdFromUser } from '../services/usersServices'
+import { deleteCompanyIdFromUser } from '../services/users.service'
 
 const httpResponse = new HttpResponse()
 

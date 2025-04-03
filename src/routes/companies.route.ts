@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import verifyToken from '../middlewares/verifyToken'
-import companyController from '../controllers/companyController'
+import companyController from '../controllers/company.controller'
 import uploadTempFiles from '../middlewares/multer'
 
 const companyRouter = Router()

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import userControllers from '../controllers/userControllers'
+import userControllers from '../controllers/user.controller'
 import verifyToken from '../middlewares/verifyToken'
 import verifyAdmin from '../middlewares/verifyAdmin'
 

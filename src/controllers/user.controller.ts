@@ -13,7 +13,7 @@ import {
   validateUser,
   sendEmailToRevoverPass,
   changeRecoverPass,
-} from '../services/usersServices'
+} from '../services/users.service'
 import { HttpResponse } from '../shared/HttpResponse'
 import { CustomError, ErrorsMessage } from '../shared/CustomError'
 import mongoose from 'mongoose'

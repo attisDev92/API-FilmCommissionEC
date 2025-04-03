@@ -8,12 +8,12 @@ import {
   findLocationById,
   updateLocationFiles,
   updateLoction as updateLocationServices,
-} from '../services/locationServices'
+} from '../services/location.service'
 import { CustomError, ErrorsMessage } from '../shared/CustomError'
 import { AuthenticatedRequest, UserType } from '../types/userTypes'
 import { LocationTypes } from '../types/locationTypes'
 import { MongooseError } from 'mongoose'
-import { deleteLocationFromUser } from '../services/usersServices'
+import { deleteLocationFromUser } from '../services/users.service'
 
 const httpResponse = new HttpResponse()
 
