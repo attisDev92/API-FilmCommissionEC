@@ -1,6 +1,8 @@
 import express, { Application } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import swaggerUi from 'swagger-ui-express'
+import { swaggerSpec } from './config/swagger'
 import { requestLogger, unknownEndpoint } from './middlewares/infoRequest'
 
 import userRouter from './routes/users'
@@ -14,6 +16,9 @@ const app: Application = express()
 app.use(cors())
 app.use(morgan(':method :url :status :response-time ms'))
 app.use(express.json())
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(requestLogger)
