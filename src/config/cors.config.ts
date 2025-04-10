@@ -12,7 +12,6 @@ interface CorsConfig {
 
 const corsConfig: CorsConfig = {
   origin: function (origin, callback) {
-    // Verificar si origin es undefined y proporcionar un valor por defecto
     const originToCheck = origin || ''
 
     if (

@@ -25,12 +25,15 @@ switch (process.env.NODE_ENV) {
   case 'production':
     MONGO_URI = process.env.MONGODB_URI || ''
     firebaseStorage = process.env.FIREBASE_STORAGE || ''
-    allowedOrigins = ['https://ecuadorfilmcommission.com']
+    allowedOrigins = [
+      'https://ecuadorfilmcommission.com',
+      'https://cinemaec.com',
+    ]
     break
   case 'development':
     MONGO_URI = process.env.MONGODB_URI_DEV || ''
     firebaseStorage = process.env.FIREBASE_STORAGE_DEV || ''
-    allowedOrigins = [process.env.FRONT_DEV || '']
+    allowedOrigins = [process.env.FRONT_DEV || '', 'http://localhost:3000']
     break
   case 'test':
     MONGO_URI = process.env.MONGODB_URI_TEST || ''
