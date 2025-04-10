@@ -27,11 +27,13 @@ const audiovisualProjectSchema = new Schema<AudiovisualProjectTypes>({
   sinopsis: {
     type: String,
     minlength: 100,
+    maxlength: 1000,
     required: true,
   },
   sinopsisEng: {
     type: String,
     minlength: 100,
+    maxlength: 1000,
     required: true,
   },
   country: {
@@ -61,6 +63,7 @@ const audiovisualProjectSchema = new Schema<AudiovisualProjectTypes>({
   currentSituation: {
     type: String,
     required: true,
+    enum: ['Producción', 'Post-Producción', 'Distribución'],
   },
   needs: {
     type: String,

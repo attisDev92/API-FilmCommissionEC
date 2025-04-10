@@ -2,13 +2,15 @@ import { Request, Response } from 'express'
 import { HttpResponse } from '../../../shared/HttpResponse'
 import {
   createLocation,
-  deleteLocationFile,
   destroyLocation,
   fetchLocations,
   findLocationById,
-  updateLocationFiles,
   updateLoction as updateLocationServices,
 } from '../services/location.service'
+import {
+  deleteLocationFile,
+  updateLocationFiles,
+} from '../services/location-files.service'
 import { CustomError, ErrorsMessage } from '../../../shared/CustomError'
 import {
   AuthenticatedRequest,
@@ -131,7 +133,7 @@ const updateLocationFilesController = async (
     }
 
     const updatedLocation = await updateLocationFiles(location, req.files[0])
-    return httpResponse.BAD_REQUEST(res, updatedLocation)
+    return httpResponse.ACCEPTED(res, updatedLocation)
   } catch (error: any) {
     console.error('Error en updateCompanyFilesController:', error)
     if (error instanceof CustomError) {
@@ -147,12 +149,11 @@ const deleteLocationFileController = async (
 ) => {
   try {
     const { locationId, fileId } = req.body
-    const location = await findLocationById(locationId)
 
+    const location = await findLocationById(locationId)
     if (!location) {
       return httpResponse.BAD_REQUEST(res)
     }
-
     const locationUpdated = await deleteLocationFile(location, fileId)
     return httpResponse.ACCEPTED(res, locationUpdated)
   } catch (error: any) {
@@ -174,7 +175,7 @@ const deleteLocation = async (
   try {
     await destroyLocation(locationId)
     await deleteLocationFromUser(locationId, id.toString())
-    httpResponse.OK(res)
+    httpResponse.OK(res, { success: true })
   } catch (error: any) {
     console.error(error)
     if (error instanceof CustomError) {

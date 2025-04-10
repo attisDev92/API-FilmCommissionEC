@@ -155,7 +155,6 @@ const deleteCompanyFileController = async (
     }
 
     const updatedCompany = await deleteCompanyFile(company, fileId)
-
     return httpResponse.ACCEPTED(res, updatedCompany)
   } catch (error: any) {
     console.error('Error en deleteCompanyFileController:', error)

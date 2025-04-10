@@ -61,18 +61,20 @@ export interface LocationTypes {
   name: string
   type: 'Público' | 'Privado'
   description: string
+  descriptionEn: string
   category: Areas
   subCategory: (UrbanArea | RuralArea | NaturalArea)[]
-  province: ProvinceTypes
-  city: string
+  province?: string
+  city?: string
   requestInformation: string
-  weather: WeatherTypes
+  requestInformationEn: string
+  weather: string[]
   accessibilities: string[]
   contactName: string
   email: string
   phone: string
-  direction?: string
-  cordinates?: string[]
+  address?: string
+  coordinates?: string[]
   photos?: file[]
   public?: boolean
   created?: Date

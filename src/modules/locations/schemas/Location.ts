@@ -5,7 +5,7 @@ import { LocationTypes } from '../interfaces/location.interface'
 const locationSchema = new Schema<LocationTypes>({
   name: {
     type: String,
-    minlength: 5,
+    minlength: 4,
     required: true,
   },
   type: {
@@ -18,10 +18,14 @@ const locationSchema = new Schema<LocationTypes>({
     minlength: 50,
     required: true,
   },
-  category: {
+  descriptionEn: {
     type: String,
     minlength: 50,
-    enum: ['Urbano', 'Rutal', 'Natural'],
+    required: true,
+  },
+  category: {
+    type: String,
+    minlength: 5,
     required: true,
   },
   subCategory: {
@@ -30,57 +34,22 @@ const locationSchema = new Schema<LocationTypes>({
   },
   province: {
     type: String,
-    required: true,
-    enum: [
-      'Azuay',
-      'Bolívar',
-      'Cañar',
-      'Carchi',
-      'Chimborazo',
-      'Cotopaxi',
-      'El Oro',
-      'Esmeraldas',
-      'Galápagos',
-      'Guayas',
-      'Imbabura',
-      'Loja',
-      'Los Ríos',
-      'Manabí',
-      'Morona Santiago',
-      'Napo',
-      'Orellana',
-      'Pastaza',
-      'Pichincha',
-      'Santa Elena',
-      'Santo Domingo',
-      'Sucumbíos',
-      'Tungurahua',
-      'Zamora',
-    ],
   },
   city: {
     type: String,
-    minlength: 3,
-    required: true,
   },
   requestInformation: {
     type: String,
     minlength: 50,
     required: true,
   },
-  weather: {
+  requestInformationEn: {
     type: String,
-    minlength: 3,
-    enum: [
-      'Cálido',
-      'Húmedo',
-      'Seco',
-      'Semiseco',
-      'Frío',
-      'Templado',
-      'Tropical',
-      'Polar',
-    ],
+    minlength: 50,
+    required: true,
+  },
+  weather: {
+    type: [String],
     required: true,
   },
   accessibilities: {
@@ -102,11 +71,10 @@ const locationSchema = new Schema<LocationTypes>({
     minlength: 10,
     required: true,
   },
-  direction: {
+  address: {
     type: String,
-    minlength: 3,
   },
-  cordinates: {
+  coordinates: {
     type: [String],
   },
   photos: {
@@ -117,7 +85,7 @@ const locationSchema = new Schema<LocationTypes>({
         },
       },
     ],
-    default: {},
+    default: [],
   },
   public: {
     type: Boolean,

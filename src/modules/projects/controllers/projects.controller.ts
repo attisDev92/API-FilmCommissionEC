@@ -6,16 +6,18 @@ import {
 } from '../../users/interfaces/user.interface'
 import { AudiovisualProjectTypes } from '../interfaces/project.interfce'
 import { ErrorsMessage, CustomError } from '../../../shared/CustomError'
-import { MongooseError, ObjectId } from 'mongoose'
+import { MongooseError } from 'mongoose'
 import {
   createProject,
-  deleteProjectFile,
   destroyProject,
   fetchProjets,
   findProjectById,
-  updateProjectFiles,
   updateProjectService,
 } from '../services/project.service'
+import {
+  deleteProjectFile,
+  updateProjectFiles,
+} from '../services/project-files.service'
 import { deleteProjectIdFromUser } from '../../users/services/users.service'
 
 const httpResponse = new HttpResponse()

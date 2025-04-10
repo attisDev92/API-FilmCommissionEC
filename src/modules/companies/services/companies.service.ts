@@ -23,6 +23,9 @@ const storage = getStorage(app)
 export const findCompanyById = async (id: string) => {
   try {
     const company = await Company.findById(id)
+    if (!company) {
+      throw new CustomError(HttpStatus.NOT_FOUND, ErrorsMessage.NOT_EXIST)
+    }
     return company
   } catch (error) {
     throw new CustomError(HttpStatus.BAD_REQUEST, ErrorsMessage.NOT_EXIST)
