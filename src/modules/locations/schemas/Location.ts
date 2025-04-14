@@ -56,6 +56,14 @@ const locationSchema = new Schema<LocationTypes>({
     type: [String],
     required: true,
   },
+  services: {
+    type: [String],
+    required: true,
+  },
+  nearbyServices: {
+    type: [String],
+    required: true,
+  },
   contactName: {
     type: String,
     minlength: 3,

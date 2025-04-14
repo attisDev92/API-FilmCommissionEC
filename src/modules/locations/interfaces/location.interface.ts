@@ -41,16 +41,6 @@ type RuralArea = 'Pueblos' | 'Carreteras'
 
 type NaturalArea = 'Reservas Ecológicas' | 'Playas'
 
-type WeatherTypes =
-  | 'Cálido'
-  | 'Húmedo'
-  | 'Seco'
-  | 'Semiseco'
-  | 'Frío'
-  | 'Templado'
-  | 'Tropical'
-  | 'Polar'
-
 interface file {
   url: string
   _id?: ObjectId
@@ -70,6 +60,8 @@ export interface LocationTypes {
   requestInformationEn: string
   weather: string[]
   accessibilities: string[]
+  services: string[]
+  nearbyServices: string[]
   contactName: string
   email: string
   phone: string
