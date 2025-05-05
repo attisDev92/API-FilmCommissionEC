@@ -103,6 +103,9 @@ const locationSchema = new Schema<LocationTypes>({
     type: Boolean,
     default: false,
   },
+  website: {
+    type: String,
+  },
   created: {
     type: Date,
     default: new Date(),

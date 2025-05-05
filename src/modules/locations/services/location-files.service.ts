@@ -22,7 +22,7 @@ export const updateLocationFiles = async (location: any, file: any) => {
     const storageRef = ref(storage, fileName)
 
     if (file.fieldname === 'photo') {
-      if (location.photos && location.photos.length >= 10) {
+      if (location.photos && location.photos.length >= 15) {
         throw new CustomError(
           HttpStatus.BAD_REQUEST,
           ErrorsMessage.INVALID_DATA,

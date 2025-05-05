@@ -69,6 +69,7 @@ export interface LocationTypes {
   coordinates?: string[]
   photos?: file[]
   public?: boolean
+  website?: string
   created?: Date
   activeWhatsapp?: boolean
   userId?: ObjectId
