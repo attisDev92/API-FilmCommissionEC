@@ -62,9 +62,10 @@ export interface LocationTypes {
   accessibilities: string[]
   services: string[]
   nearbyServices: string[]
-  contactName: string
-  email: string
-  phone: string
+  contactName?: string
+  email?: string
+  phone?: string
+  phoneNumber?: string
   address?: string
   coordinates?: string[]
   photos?: file[]

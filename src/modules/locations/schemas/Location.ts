@@ -67,17 +67,18 @@ const locationSchema = new Schema<LocationTypes>({
   contactName: {
     type: String,
     minlength: 3,
-    required: true,
   },
   email: {
     type: String,
     minlength: 5,
-    required: true,
   },
   phone: {
     type: String,
     minlength: 10,
-    required: true,
+  },
+  phoneNumber: {
+    type: String,
+    minLenght: 5,
   },
   address: {
     type: String,
